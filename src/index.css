@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+
+:root{
+  --ff-primary: "Playfair", serif;
+  --ff-secondary: "Quicksand", sans-serif;
+}
+
+*{
+  box-sizing: border-box;
+  font-optical-sizing: auto;
+
+  font-family: var(--ff-primary);
+}
+
+*::after{
+  box-sizing: border-box;
+} *::before{
+  box-sizing: border-box;
+}
+
+p{
+  font-family: var(--ff-secondary);
+}
+
+h1{
+  font-family: var(--ff-primary);
+}
+
