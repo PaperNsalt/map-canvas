@@ -4,6 +4,15 @@
 :root{
   --ff-primary: "Playfair", serif;
   --ff-secondary: "Quicksand", sans-serif;
+
+  --color-primary-100: #fafafa;
+  --color-primary-200: #FF9B42;
+  --color-primary-300: #130303;
+
+}
+
+html{
+  background-color: var(--color-primary-100);
 }
 
 *{
