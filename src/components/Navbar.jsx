@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
+import ThemeToggle from "./ThemeToggle";
+
+import logo from '../assets/MAPCANVAS LOGO.svg'
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -13,13 +17,16 @@ function Navbar() {
   ];
 
   return (
-    <nav className="bg-gray-900 text-white shadow-md">
+    <nav className="bg-[#FF9B42] dark:bg-black rounded-full text-white shadow-md mt-4">
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
         
         {/* Logo */}
-        <h1 className="text-xl font-bold tracking-wide">
-          MapCanvas
+        <div className="flex justify-center items-center gap-2">
+        <img src={logo} alt="logo"  className="size-10"/>
+        <h1 className="text-xl font-bold tracking-tighter">
+          MAPCANVAS
         </h1>
+        </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-6">
@@ -35,9 +42,13 @@ function Navbar() {
               >
                 {link.name}
               </Link>
+
+              
             </motion.div>
-          ))}
+          ))}<ThemeToggle></ThemeToggle>
         </div>
+
+        
 
         {/* Mobile Button */}
         <div className="md:hidden">
@@ -54,7 +65,7 @@ function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-gray-800 px-4 pb-4"
+            className="md:hidden bg-[#FF9B42] dark:bg-gray-800 px-4 pb-4 shadow-lg rounded-b-xl"
           >
             {navLinks.map((link, index) => (
               <motion.div

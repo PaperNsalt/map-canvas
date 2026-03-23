@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@tailwind utilities;
 
 :root{
   --ff-primary: "Playfair", serif;
@@ -11,15 +14,11 @@
 
 }
 
-html{
-  background-color: var(--color-primary-100);
-}
-
 *{
   box-sizing: border-box;
   font-optical-sizing: auto;
 
-  font-family: var(--ff-primary);
+  font-family: var(--ff-secondary);
 }
 
 *::after{
@@ -33,6 +32,6 @@ p{
 }
 
 h1{
-  font-family: var(--ff-primary);
+  font-family: var(--ff-secondary);
 }
 

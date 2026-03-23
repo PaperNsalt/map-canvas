@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-#root {
+section {
   /* Desktop Styles (Default) */
   max-width: 80%;
   margin: 0 auto; /* Centers the container */
-  margin-inline: auto;
+  /* margin-inline: auto; */
   /* padding: 2rem; */
 }
 
