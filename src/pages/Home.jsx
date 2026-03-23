@@ -4,8 +4,8 @@
 function HomePage(){
   return(
     <>
-    <section>
-    <div className="grid grid-cols-2 gap-4 mt-10">
+    <section className="pt-20">
+    <div className="grid grid-cols-2 gap-4">
       <div className="flex justify-center items-start flex-col">
         <h1 className="text-4xl font-bold tracking-tighter">
           Turn Your Favorite Places into Stunning Map Posters
@@ -24,9 +24,9 @@ function HomePage(){
     </div>
     </section>
 
-    <section>
-      <div>
-
+    <section className="mt-10">
+      <div className="flex justify-center items-center">
+        <h1 className="font-playfair text-3xl">What is MapCanvas?</h1>
       </div>
     </section>
 

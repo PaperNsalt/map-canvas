@@ -17,8 +17,6 @@
 *{
   box-sizing: border-box;
   font-optical-sizing: auto;
-
-  font-family: var(--ff-secondary);
 }
 
 *::after{
@@ -27,11 +25,6 @@
   box-sizing: border-box;
 }
 
-p{
-  font-family: var(--ff-secondary);
+section{
+  margin-top: calc(var(--spacing) * 10)
 }
-
-h1{
-  font-family: var(--ff-secondary);
-}
-
