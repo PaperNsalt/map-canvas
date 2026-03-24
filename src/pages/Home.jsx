@@ -5,9 +5,9 @@ function HomePage(){
   return(
     <>
     <section className="pt-20">
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-8">
       <div className="flex justify-center items-start flex-col">
-        <h1 className="text-4xl font-bold tracking-tighter">
+        <h1 className="text-[3.6rem] font-medium leading-16" style={{ fontFamily: "'Playfair Display', 'serrif'" }}>
           Turn Your Favorite Places into Stunning Map Posters
         </h1>
 
@@ -24,10 +24,20 @@ function HomePage(){
     </div>
     </section>
 
-    <section className="mt-10">
+    <section className="mt-20">
       <div className="flex justify-center items-center">
-        <h1 className="font-playfair text-3xl">What is MapCanvas?</h1>
+        <h1 className="text-[2rem]" style={{ fontFamily: "'Playfair Display', 'serif'" }}>What is MapCanvas?</h1>
       </div>
+
+      <div>
+        <p className="text-base text-center">
+          MapCanvas is a creative platform that allows you to transform real-world locations into beautiful, customizable posters. Whether it’s your hometown, a travel destination, or a special place, MapCanvas helps you turn meaningful locations into elegant visual designs.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      
     </section>
 
     </>

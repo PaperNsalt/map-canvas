@@ -38,7 +38,7 @@ function Navbar() {
             >
               <Link
                 to={link.path}
-                className="hover:text-[#FF9B42] transition-colors"
+                className="hover:text-[#FF9B42] transition-colors" style={{ fontFamily: "'Quicksand', 'sans-serif'" }}
               >
                 {link.name}
               </Link>

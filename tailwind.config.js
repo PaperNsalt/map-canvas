@@ -5,7 +5,7 @@ export default {
     extend: {
       fontFamily: {
         playfair: ['"Playfair Display"', "serif"],
-        quicksand: ["Quicksand", "sans-serif"],
+        quicksand: ['"Quicksand"', "sans-serif"],
       },
     },
   },

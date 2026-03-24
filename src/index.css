@@ -28,3 +28,7 @@
 section{
   margin-top: calc(var(--spacing) * 10)
 }
+
+p{
+  font-family: var(--ff-secondary);
+}
