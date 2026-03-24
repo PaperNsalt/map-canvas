@@ -2,6 +2,15 @@
 
 
 function HomePage(){
+  function Test({ logo, text, sub }) {
+  return (
+    <div className="flex flex-col justify-center items-center gap-2">
+      {logo && <img src={logo} alt="img" />}
+      <p>{text}</p>
+      {sub && <span>{sub}</span>}
+    </div>
+  );
+}
   return(
     <>
     <section className="pt-20">
@@ -37,7 +46,21 @@ function HomePage(){
     </section>
 
     <section>
-      
+      <div>
+
+        <div>
+          <h1 className="text-[3rem]" style={{ fontFamily: "'Playfair Display', 'serif'" }}>Features You'll Love</h1>
+        </div>
+
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
+      <Test 
+  logo="/icon.png"
+  text="Create Custom Maps"
+  sub="Design your own map posters easily"
+/>
+      </div>
+
+      </div>
     </section>
 
     </>
