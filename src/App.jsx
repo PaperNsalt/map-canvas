@@ -5,6 +5,7 @@ import GalleryPage from "./pages/Gallery";
 import AboutPage from "./pages/About";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import { ThemeProvider } from "./context/ThemeContext";
 
 import "./App.css";
@@ -26,6 +27,8 @@ function App() {
             <Route path="about" element={<AboutPage />} />
           </Routes>
         </main>
+
+        <Footer />
       </div>
     </ThemeProvider>
   );
