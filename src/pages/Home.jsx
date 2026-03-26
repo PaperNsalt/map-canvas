@@ -35,6 +35,24 @@ const heroStats = [
   { value: "1 click", label: "Instant preview" },
 ];
 
+const steps = [
+  {
+    number: "01",
+    title: "Search for a location",
+    description: "Enter any place you want to turn into a poster.",
+  },
+  {
+    number: "02",
+    title: "Customize your design",
+    description: "Choose styles, colors, and add personal touches.",
+  },
+  {
+    number: "03",
+    title: "Download your poster",
+    description: "Save your design and print or share it.",
+  },
+];
+
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (delay = 0) => ({
@@ -278,6 +296,105 @@ function HomePage() {
             <FeatureCard key={feature.title} index={index} {...feature} />
           ))}
         </div>
+      </section>
+
+      <section className="mt-20">
+        <motion.div
+          className="mx-auto max-w-3xl text-center"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          custom={0}
+        >
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
+            How it works
+          </p>
+          <h2
+            className="mt-4 text-3xl md:text-4xl"
+            style={{ fontFamily: "'Playfair Display', 'serif'" }}
+          >
+            Create Your Map in 3 Easy Steps
+          </h2>
+        </motion.div>
+
+        <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {steps.map((step, index) => (
+            <motion.article
+              key={step.number}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              custom={0.08 + index * 0.08}
+              whileHover={{ y: -8, scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              className="rounded-[2rem] border border-gray-200/80 bg-[linear-gradient(180deg,_rgba(255,255,255,0.95),_rgba(249,244,239,0.92))] p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl dark:border-gray-800 dark:bg-[linear-gradient(180deg,_rgba(255,255,255,0.06),_rgba(255,255,255,0.03))]"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <span
+                  className="text-4xl leading-none text-black/85 dark:text-white/85"
+                  style={{ fontFamily: "'Playfair Display', 'serif'" }}
+                >
+                  {step.number}
+                </span>
+                <div className="h-px flex-1 bg-gradient-to-r from-[#FF9B42] to-transparent" />
+              </div>
+
+              <h3
+                className="mt-6 text-2xl"
+                style={{ fontFamily: "'Playfair Display', 'serif'" }}
+              >
+                {step.title}
+              </h3>
+
+              <p className="mt-4 leading-7 text-gray-700 dark:text-gray-300">
+                {step.description}
+              </p>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-20">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          custom={0.05}
+          className="relative overflow-hidden rounded-[2.5rem] bg-black px-8 py-12 text-white shadow-[0_30px_80px_rgba(15,23,42,0.16)] dark:bg-white dark:text-black md:px-12"
+        >
+          <div className="absolute -right-10 top-0 h-36 w-36 rounded-full bg-[#FF9B42]/35 blur-3xl" />
+          <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-white/10 blur-3xl dark:bg-black/10" />
+
+          <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#FFB36E] dark:text-[#C76614]">
+                Ready to start?
+              </p>
+              <h2
+                className="mt-4 text-3xl md:text-4xl"
+                style={{ fontFamily: "'Playfair Display', 'serif'" }}
+              >
+                Start Creating Your Own Map Poster Today
+              </h2>
+              <p className="mt-5 text-base leading-8 text-white/80 dark:text-black/75 md:text-lg">
+                Bring your memories to life with a custom-designed map. It is
+                simple, creative, and made just for you.
+              </p>
+            </div>
+
+            <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                to="/editor"
+                className="inline-flex items-center justify-center rounded-[1.25rem] bg-[#FF9B42] px-6 py-3 text-sm font-semibold text-black shadow-lg shadow-[#FF9B42]/25 transition-colors duration-300 hover:bg-white dark:hover:bg-black dark:hover:text-white"
+              >
+                Create Now
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
       </section>
     </main>
   );
