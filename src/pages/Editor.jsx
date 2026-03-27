@@ -8,6 +8,8 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
+import EditorBottomToolbar from "../components/EditorBottomToolbar";
+import EditorSidebar from "../components/EditorSidebar";
 import "leaflet/dist/leaflet.css";
 
 const mapStyles = [
@@ -142,10 +144,10 @@ const initialState = {
   selectedThemeId: "modern",
   mapCenter: [14.5995, 120.9842],
   zoom: 13,
-  title: "A Place Worth Remembering",
-  subtitle: "Manila, Philippines",
+  title: "",
+  subtitle: "",
   searchQuery: "",
-  selectedLocationLabel: "Manila, Philippines",
+  selectedLocationLabel: "",
   showCoordinates: true,
   showPlaceNames: true,
   posterSize: "a4",
@@ -182,81 +184,6 @@ function MapViewportController({ center, zoom, onViewChange }) {
   return null;
 }
 
-function ControlLabel({ children }) {
-  return (
-    <label className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500 dark:text-gray-400">
-      {children}
-    </label>
-  );
-}
-
-function SidebarSection({ title, children }) {
-  return (
-    <section className="rounded-[1.6rem] border border-gray-200/80 bg-white/70 p-4 dark:border-white/10 dark:bg-white/5">
-      <h2 className="text-sm font-semibold tracking-[0.04em] text-gray-900 dark:text-white">
-        {title}
-      </h2>
-      <div className="mt-4 space-y-4">{children}</div>
-    </section>
-  );
-}
-
-function MapStyleCard({ style, selected, onSelect }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onSelect(style.id)}
-      className={`rounded-[1.35rem] border p-3 text-left transition ${
-        selected
-          ? "border-[#FF9B42] bg-[#FF9B42]/10"
-          : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
-      }`}
-    >
-      <div
-        className={`relative h-16 overflow-hidden rounded-[1rem] ${style.previewClass} before:absolute before:inset-x-3 before:top-3 before:h-7 before:rounded-full after:absolute after:inset-x-6 after:bottom-3 after:h-1 after:rounded-full`}
-      />
-      <div className="mt-3 flex items-center justify-between">
-        <span className="text-sm font-semibold">{style.name}</span>
-        <span
-          className={`size-3 rounded-full ${
-            selected ? "bg-[#FF9B42]" : "bg-gray-300 dark:bg-gray-600"
-          }`}
-        />
-      </div>
-    </button>
-  );
-}
-
-function ThemeCard({ theme, selected, onSelect }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onSelect(theme)}
-      className={`rounded-[1.35rem] border p-3 text-left transition ${
-        selected
-          ? "border-[#FF9B42] bg-[#FF9B42]/10"
-          : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
-      }`}
-    >
-      <div className="flex gap-2">
-        <span
-          className="h-10 flex-1 rounded-xl border border-black/10"
-          style={{ backgroundColor: theme.posterBackground }}
-        />
-        <span
-          className="h-10 flex-1 rounded-xl border border-black/10"
-          style={{ backgroundColor: theme.primaryColor }}
-        />
-        <span
-          className="h-10 flex-1 rounded-xl border border-black/10"
-          style={{ backgroundColor: theme.accentColor }}
-        />
-      </div>
-      <p className="mt-3 text-sm font-semibold">{theme.name}</p>
-    </button>
-  );
-}
-
 function EditorPage() {
   const previewRef = useRef(null);
   const [selectedMapStyleId, setSelectedMapStyleId] = useState(initialState.selectedMapStyleId);
@@ -269,6 +196,8 @@ function EditorPage() {
   const [selectedLocationLabel, setSelectedLocationLabel] = useState(
     initialState.selectedLocationLabel
   );
+  const [showTitle, setShowTitle] = useState(true);
+  const [hasActiveLocation, setHasActiveLocation] = useState(false);
   const [showCoordinates, setShowCoordinates] = useState(initialState.showCoordinates);
   const [showPlaceNames, setShowPlaceNames] = useState(initialState.showPlaceNames);
   const [posterSize, setPosterSize] = useState(initialState.posterSize);
@@ -384,6 +313,7 @@ function EditorPage() {
     setTitle(preset.title);
     setSubtitle(preset.subtitle);
     setSelectedLocationLabel(`${preset.title}, ${preset.subtitle}`);
+    setHasActiveLocation(true);
     setSearchFeedback(`Showing ${preset.title}, ${preset.subtitle}.`);
   };
 
@@ -429,6 +359,7 @@ function EditorPage() {
       setTitle(labelParts[0] || query);
       setSubtitle(labelParts.slice(1, 3).join(", ") || "Selected location");
       setSelectedLocationLabel(match.display_name);
+      setHasActiveLocation(true);
       setSearchFeedback(`Showing ${match.display_name}.`);
     } catch {
       setSearchFeedback("Location search failed. Please try again.");
@@ -489,6 +420,7 @@ function EditorPage() {
       searchQuery,
       selectedLocationLabel,
       showCoordinates,
+      showTitle,
       showPlaceNames,
       posterSize,
       orientation,
@@ -510,6 +442,8 @@ function EditorPage() {
     setSubtitle(initialState.subtitle);
     setSearchQuery(initialState.searchQuery);
     setSelectedLocationLabel(initialState.selectedLocationLabel);
+    setShowTitle(true);
+    setHasActiveLocation(false);
     setShowCoordinates(initialState.showCoordinates);
     setShowPlaceNames(initialState.showPlaceNames);
     setPosterSize(initialState.posterSize);
@@ -520,265 +454,59 @@ function EditorPage() {
     setSearchFeedback("Design reset to defaults.");
   };
 
+  const resetPosition = () => {
+    setMapCenter(initialState.mapCenter);
+    setZoom(initialState.zoom);
+    setSearchFeedback("Map position reset.");
+  };
+
   return (
-    <main className="pb-16 pt-28">
+    <main className="pb-44 pt-28">
       <section className="rounded-[2.5rem] border border-gray-200/80 bg-[linear-gradient(135deg,_rgba(255,255,255,0.98),_rgba(248,244,238,0.96))] p-5 shadow-[0_30px_80px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(14,14,14,0.98),_rgba(24,24,24,0.98))] md:p-8">
         <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
-          <aside className="xl:sticky xl:top-28 xl:self-start">
-            <div className="max-h-[calc(100vh-8rem)] space-y-4 overflow-y-auto rounded-[2rem] border border-gray-200/80 bg-white/80 p-5 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
-                  Customize Your Map
-                </p>
-                <p className="mt-3 text-sm leading-7 text-gray-600 dark:text-gray-300">
-                  Shape the location, look, and poster details from this left panel.
-                </p>
-              </div>
-
-              <SidebarSection title="A. Location">
-                <div>
-                  <ControlLabel>Search</ControlLabel>
-                  <form onSubmit={handleSearch} className="mt-3 space-y-3">
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(event) => setSearchQuery(event.target.value)}
-                      placeholder="Search for a location..."
-                      className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
-                    />
-                    <button
-                      type="submit"
-                      disabled={isSearching}
-                      className="w-full rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
-                    >
-                      {isSearching ? "Searching..." : "Set Location"}
-                    </button>
-                  </form>
-                </div>
-                <div>
-                  <ControlLabel>Selected Location</ControlLabel>
-                  <div className="mt-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-200">
-                    {selectedLocationLabel}
-                  </div>
-                  <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    {searchFeedback || "Search a city, street, or landmark to place the map."}
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {locationPresets.map((preset) => (
-                    <button
-                      key={preset.id}
-                      type="button"
-                      onClick={() => handleLocationPreset(preset)}
-                      className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-                    >
-                      {preset.label}
-                    </button>
-                  ))}
-                </div>
-              </SidebarSection>
-
-              <SidebarSection title="B. Map Style">
-                <div className="grid grid-cols-2 gap-3">
-                  {mapStyles.map((style) => (
-                    <MapStyleCard
-                      key={style.id}
-                      style={style}
-                      selected={selectedMapStyleId === style.id}
-                      onSelect={setSelectedMapStyleId}
-                    />
-                  ))}
-                </div>
-              </SidebarSection>
-
-              <SidebarSection title="C. Theme Presets">
-                <div className="grid grid-cols-2 gap-3">
-                  {themePresets.map((theme) => (
-                    <ThemeCard
-                      key={theme.id}
-                      theme={theme}
-                      selected={selectedThemeId === theme.id}
-                      onSelect={applyTheme}
-                    />
-                  ))}
-                </div>
-              </SidebarSection>
-
-              <SidebarSection title="D. Colors">
-                <div className="grid gap-3">
-                  <label className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 dark:border-white/10 dark:bg-white/5">
-                    <span className="text-sm font-semibold">Primary color</span>
-                    <input
-                      type="color"
-                      value={primaryColor}
-                      onChange={(event) => setPrimaryColor(event.target.value)}
-                      className="h-9 w-14 cursor-pointer rounded-lg border-0 bg-transparent"
-                    />
-                  </label>
-                  <label className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 dark:border-white/10 dark:bg-white/5">
-                    <span className="text-sm font-semibold">Background color</span>
-                    <input
-                      type="color"
-                      value={backgroundColor}
-                      onChange={(event) => setBackgroundColor(event.target.value)}
-                      className="h-9 w-14 cursor-pointer rounded-lg border-0 bg-transparent"
-                    />
-                  </label>
-                  <label className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 dark:border-white/10 dark:bg-white/5">
-                    <span className="text-sm font-semibold">Accent color</span>
-                    <input
-                      type="color"
-                      value={accentColor}
-                      onChange={(event) => setAccentColor(event.target.value)}
-                      className="h-9 w-14 cursor-pointer rounded-lg border-0 bg-transparent"
-                    />
-                  </label>
-                </div>
-              </SidebarSection>
-
-              <SidebarSection title="E. Text & Labels">
-                <div className="space-y-3">
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                    placeholder="Title"
-                    className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
-                  />
-                  <input
-                    type="text"
-                    value={subtitle}
-                    onChange={(event) => setSubtitle(event.target.value)}
-                    placeholder="Subtitle"
-                    className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
-                  />
-                </div>
-                <label className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold dark:border-white/10 dark:bg-white/5">
-                  Show Coordinates
-                  <input
-                    type="checkbox"
-                    checked={showCoordinates}
-                    onChange={() => setShowCoordinates((current) => !current)}
-                    className="size-4 accent-[#FF9B42]"
-                  />
-                </label>
-                <label className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold dark:border-white/10 dark:bg-white/5">
-                  Show Place Names
-                  <input
-                    type="checkbox"
-                    checked={showPlaceNames}
-                    onChange={() => setShowPlaceNames((current) => !current)}
-                    className="size-4 accent-[#FF9B42]"
-                  />
-                </label>
-              </SidebarSection>
-
-              <SidebarSection title="F. Layout">
-                <div>
-                  <ControlLabel>Poster Size</ControlLabel>
-                  <div className="mt-3 grid grid-cols-3 gap-2">
-                    {["a4", "square", "custom"].map((size) => (
-                      <button
-                        key={size}
-                        type="button"
-                        onClick={() => setPosterSize(size)}
-                        className={`rounded-2xl border px-3 py-3 text-sm font-semibold transition ${
-                          posterSize === size
-                            ? "border-[#FF9B42] bg-[#FF9B42]/10 text-[#C76614] dark:text-[#FFB36E]"
-                            : "border-gray-200 bg-white text-gray-700 hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
-                        }`}
-                      >
-                        {size.toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <ControlLabel>Orientation</ControlLabel>
-                  <div className="mt-3 grid grid-cols-2 gap-2">
-                    {["portrait", "landscape"].map((option) => (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => setOrientation(option)}
-                        className={`rounded-2xl border px-3 py-3 text-sm font-semibold capitalize transition ${
-                          orientation === option
-                            ? "border-[#FF9B42] bg-[#FF9B42]/10 text-[#C76614] dark:text-[#FFB36E]"
-                            : "border-gray-200 bg-white text-gray-700 hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
-                        }`}
-                      >
-                        {option}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </SidebarSection>
-
-              <SidebarSection title="G. Zoom & Position">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <ControlLabel>Zoom</ControlLabel>
-                    <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">
-                      {zoom}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="2"
-                    max="18"
-                    value={zoom}
-                    onChange={(event) => setZoom(Number(event.target.value))}
-                    className="mt-3 w-full accent-[#FF9B42]"
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setMapCenter(initialState.mapCenter)}
-                  className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-                >
-                  Center Map
-                </button>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Drag map to adjust position
-                </p>
-              </SidebarSection>
-
-              <SidebarSection title="H. Actions">
-                <div className="grid gap-3">
-                  <button
-                    type="button"
-                    onClick={saveDesign}
-                    className="rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
-                  >
-                    Save Design
-                  </button>
-                  <button
-                    type="button"
-                    onClick={resetDesign}
-                    className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-                  >
-                    Reset
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => exportPreview("png")}
-                    disabled={isExporting}
-                    className="rounded-2xl bg-[#FF9B42] px-4 py-3 text-sm font-semibold text-black transition hover:bg-[#C76614] hover:text-white disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#FFB36E] dark:hover:bg-[#C76614] dark:hover:text-white"
-                  >
-                    {isExporting ? "Preparing..." : "Download Preview"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => exportPreview("pdf")}
-                    disabled={isExporting}
-                    className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-                  >
-                    Save as PDF
-                  </button>
-                </div>
-              </SidebarSection>
-            </div>
-          </aside>
+          <EditorSidebar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+            isSearching={isSearching}
+            selectedLocationLabel={selectedLocationLabel}
+            searchFeedback={searchFeedback}
+            locationPresets={locationPresets}
+            handleLocationPreset={handleLocationPreset}
+            mapStyles={mapStyles}
+            selectedMapStyleId={selectedMapStyleId}
+            setSelectedMapStyleId={setSelectedMapStyleId}
+            themePresets={themePresets}
+            selectedThemeId={selectedThemeId}
+            applyTheme={applyTheme}
+            primaryColor={primaryColor}
+            setPrimaryColor={setPrimaryColor}
+            backgroundColor={backgroundColor}
+            setBackgroundColor={setBackgroundColor}
+            accentColor={accentColor}
+            setAccentColor={setAccentColor}
+            title={title}
+            setTitle={setTitle}
+            subtitle={subtitle}
+            setSubtitle={setSubtitle}
+            showTitle={showTitle}
+            setShowTitle={setShowTitle}
+            showCoordinates={showCoordinates}
+            setShowCoordinates={setShowCoordinates}
+            showPlaceNames={showPlaceNames}
+            setShowPlaceNames={setShowPlaceNames}
+            posterSize={posterSize}
+            setPosterSize={setPosterSize}
+            orientation={orientation}
+            setOrientation={setOrientation}
+            zoom={zoom}
+            setZoom={setZoom}
+            centerMap={() => setMapCenter(initialState.mapCenter)}
+            saveDesign={saveDesign}
+            resetDesign={resetDesign}
+            exportPreview={exportPreview}
+            isExporting={isExporting}
+          />
 
           <div className="flex min-h-[calc(100vh-14rem)] items-center justify-center rounded-[2rem] border border-gray-200/80 bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.16),_transparent_34%),linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(245,240,234,0.96))] p-4 dark:border-white/10 dark:bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.12),_transparent_28%),linear-gradient(180deg,_rgba(255,255,255,0.04),_rgba(255,255,255,0.02))] md:p-8">
             <div
@@ -791,37 +519,96 @@ function EditorPage() {
                   className={`relative w-full overflow-hidden ${mapHeightClass}`}
                   style={mapSurfaceStyle}
                 >
-                  <MapContainer
-                    center={mapCenter}
-                    zoom={zoom}
-                    zoomControl={false}
-                    attributionControl={false}
-                    className="h-full w-full"
-                  >
-                    <TileLayer url={tileConfig.url} attribution={tileConfig.attribution} />
-                    <MapViewportController
+                  {hasActiveLocation ? (
+                    <MapContainer
                       center={mapCenter}
                       zoom={zoom}
-                      onViewChange={({ center, zoom: nextZoom }) => {
-                        setMapCenter(center);
-                        setZoom(nextZoom);
-                      }}
-                    />
-                    <CircleMarker
-                      center={mapCenter}
-                      radius={9}
-                      pathOptions={{
-                        color: backgroundColor,
-                        fillColor: primaryColor,
-                        fillOpacity: 1,
-                        weight: 3,
-                      }}
-                    />
-                  </MapContainer>
+                      zoomControl={false}
+                      attributionControl={false}
+                      className="h-full w-full"
+                    >
+                      <TileLayer url={tileConfig.url} attribution={tileConfig.attribution} />
+                      <MapViewportController
+                        center={mapCenter}
+                        zoom={zoom}
+                        onViewChange={({ center, zoom: nextZoom }) => {
+                          setMapCenter(center);
+                          setZoom(nextZoom);
+                        }}
+                      />
+                      <CircleMarker
+                        center={mapCenter}
+                        radius={9}
+                        pathOptions={{
+                          color: backgroundColor,
+                          fillColor: primaryColor,
+                          fillOpacity: 1,
+                          weight: 3,
+                        }}
+                      />
+                    </MapContainer>
+                  ) : (
+                    <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.18),_transparent_30%),linear-gradient(160deg,_rgba(248,250,252,0.98),_rgba(226,232,240,0.9))] p-8 text-center dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_30%),linear-gradient(160deg,_rgba(15,23,42,0.98),_rgba(30,41,59,0.92))]">
+                      <div className="max-w-md">
+                        <p
+                          className="text-xs font-semibold uppercase tracking-[0.34em]"
+                          style={{ color: accentColor }}
+                        >
+                          Live Map Preview
+                        </p>
+                        <h2
+                          className="mt-5 text-3xl leading-tight"
+                          style={{ fontFamily: "'Playfair Display', 'serif'" }}
+                        >
+                          Start by searching for a location to create your custom map poster.
+                        </h2>
+                      </div>
+                    </div>
+                  )}
                   <div
                     className="pointer-events-none absolute inset-0 opacity-60"
                     style={mapTintStyle}
                   />
+                  {showTitle && hasActiveLocation ? (
+                    <div className="pointer-events-none absolute inset-x-6 top-6 z-[500]">
+                      <div
+                        className="mx-auto max-w-xl rounded-[1.6rem] border border-white/20 px-6 py-5 text-center shadow-[0_20px_50px_rgba(15,23,42,0.18)] backdrop-blur-md"
+                        style={{
+                          backgroundColor: `${selectedTheme.panelBackground}`,
+                          color: selectedTheme.ink,
+                        }}
+                      >
+                        <p
+                          className="text-[10px] font-semibold uppercase tracking-[0.4em]"
+                          style={{ color: accentColor }}
+                        >
+                          Custom Map Poster
+                        </p>
+                        <h1
+                          className="mt-3 text-3xl leading-tight md:text-4xl"
+                          style={{ fontFamily: "'Playfair Display', 'serif'" }}
+                        >
+                          {title || "Untitled location"}
+                        </h1>
+                        {subtitle ? (
+                          <p
+                            className="mt-2 text-sm md:text-base"
+                            style={{ color: selectedTheme.secondaryInk }}
+                          >
+                            {subtitle}
+                          </p>
+                        ) : null}
+                        {showCoordinates ? (
+                          <p
+                            className="mt-4 text-xs font-semibold uppercase tracking-[0.28em]"
+                            style={{ color: accentColor }}
+                          >
+                            {mapCenter[0].toFixed(4)}, {mapCenter[1].toFixed(4)}
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="border-t border-black/10 p-6 md:p-8" style={textPanelStyle}>
@@ -830,18 +617,6 @@ function EditorPage() {
                     style={{ color: accentColor }}
                   >
                     {selectedTheme.name} poster
-                  </p>
-                  <h1
-                    className="mt-4 text-4xl leading-tight md:text-5xl"
-                    style={{ fontFamily: "'Playfair Display', 'serif'" }}
-                  >
-                    {title || "Untitled location"}
-                  </h1>
-                  <p
-                    className="mt-3 text-base md:text-lg"
-                    style={{ color: selectedTheme.secondaryInk }}
-                  >
-                    {subtitle || "Add a subtitle"}
                   </p>
                   <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
                     {showCoordinates ? (
@@ -866,7 +641,7 @@ function EditorPage() {
                     className="mt-5 text-sm leading-7 md:text-base"
                     style={{ color: selectedTheme.secondaryInk }}
                   >
-                    {selectedLocationLabel}
+                    {selectedLocationLabel || "Choose a location to begin your poster preview."}
                   </p>
                 </div>
               </div>
@@ -874,6 +649,22 @@ function EditorPage() {
           </div>
         </div>
       </section>
+
+      <EditorBottomToolbar
+        setZoom={setZoom}
+        mapStyles={mapStyles}
+        selectedMapStyleId={selectedMapStyleId}
+        setSelectedMapStyleId={setSelectedMapStyleId}
+        resetPosition={resetPosition}
+        centerMap={() => setMapCenter(initialState.mapCenter)}
+        showTitle={showTitle}
+        setShowTitle={setShowTitle}
+        showCoordinates={showCoordinates}
+        setShowCoordinates={setShowCoordinates}
+        exportPreview={exportPreview}
+        isExporting={isExporting}
+        saveDesign={saveDesign}
+      />
     </main>
   );
 }
