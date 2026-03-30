@@ -73,6 +73,36 @@ function ThemeCard({ theme, selected, onSelect }) {
   );
 }
 
+function PlacementCard({ placement, selected, onSelect }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(placement.id)}
+      className={`rounded-[1.1rem] border p-3 text-left transition md:rounded-[1.35rem] ${
+        selected
+          ? "border-[#FF9B42] bg-[#FF9B42]/10"
+          : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
+      }`}
+    >
+      <div className="relative h-16 overflow-hidden rounded-[1rem] border border-black/10 bg-[linear-gradient(160deg,_rgba(15,23,42,0.82),_rgba(51,65,85,0.92))]">
+        <span
+          className={`absolute h-2 w-24 rounded-full bg-white/85 ${
+            placement.id === "top-center"
+              ? "left-1/2 top-3 -translate-x-1/2"
+              : placement.id === "center-stage"
+                ? "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                : placement.id === "bottom-left"
+                  ? "bottom-3 left-3"
+                  : "bottom-3 left-1/2 -translate-x-1/2"
+          }`}
+        />
+      </div>
+      <p className="mt-3 text-sm font-semibold">{placement.name}</p>
+      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{placement.description}</p>
+    </button>
+  );
+}
+
 function EditorSidebar(props) {
   const {
     searchQuery,
@@ -95,10 +125,15 @@ function EditorSidebar(props) {
     setBackgroundColor,
     accentColor,
     setAccentColor,
+    textColor,
+    setTextColor,
     title,
     setTitle,
     subtitle,
     setSubtitle,
+    textPlacementPresets,
+    selectedTextPlacementId,
+    setSelectedTextPlacementId,
     showTitle,
     setShowTitle,
     showCoordinates,
@@ -228,6 +263,15 @@ function EditorSidebar(props) {
                 className="h-9 w-14 cursor-pointer rounded-lg border-0 bg-transparent"
               />
             </label>
+            <label className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 dark:border-white/10 dark:bg-white/5">
+              <span className="text-sm font-semibold">Text color</span>
+              <input
+                type="color"
+                value={textColor}
+                onChange={(event) => setTextColor(event.target.value)}
+                className="h-9 w-14 cursor-pointer rounded-lg border-0 bg-transparent"
+              />
+            </label>
           </div>
         </SidebarSection>
 
@@ -275,6 +319,19 @@ function EditorSidebar(props) {
               className="size-4 accent-[#FF9B42]"
             />
           </label>
+          <div>
+            <ControlLabel>Text Placement</ControlLabel>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {textPlacementPresets.map((placement) => (
+                <PlacementCard
+                  key={placement.id}
+                  placement={placement}
+                  selected={selectedTextPlacementId === placement.id}
+                  onSelect={setSelectedTextPlacementId}
+                />
+              ))}
+            </div>
+          </div>
         </SidebarSection>
 
         <SidebarSection title="F. Layout">

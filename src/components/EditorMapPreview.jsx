@@ -46,9 +46,11 @@ function EditorMapPreview(props) {
     showTitle,
     selectedTheme,
     accentColor,
+    textColor,
     title,
     subtitle,
     showCoordinates,
+    selectedTextPlacement,
     selectedMapStyle,
     posterSize,
     orientation,
@@ -117,8 +119,10 @@ function EditorMapPreview(props) {
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/28 via-black/10 to-transparent md:h-36" />
 
             {showTitle && hasActiveLocation ? (
-              <div className="pointer-events-none absolute inset-x-4 top-4 z-[500] md:inset-x-6 md:top-6">
-                <div className="mx-auto max-w-xl px-2 text-center">
+              <div
+                className={`pointer-events-none absolute z-[500] ${selectedTextPlacement.outerClass}`}
+              >
+                <div className={selectedTextPlacement.innerClass}>
                   <p
                     className="text-[10px] font-semibold uppercase tracking-[0.4em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
                     style={{ color: accentColor }}
@@ -126,13 +130,16 @@ function EditorMapPreview(props) {
                     Custom Map Poster
                   </p>
                   <h1
-                    className="mt-3 text-2xl leading-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.55)] md:text-4xl"
-                    style={{ fontFamily: "'Playfair Display', 'serif'" }}
+                    className="mt-3 text-2xl leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.55)] md:text-4xl"
+                    style={{ fontFamily: "'Playfair Display', 'serif'", color: textColor }}
                   >
                     {title || "Untitled location"}
                   </h1>
                   {subtitle ? (
-                    <p className="mt-2 text-sm text-white/90 drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)] md:text-base">
+                    <p
+                      className="mt-2 text-sm drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)] md:text-base"
+                      style={{ color: textColor }}
+                    >
                       {subtitle}
                     </p>
                   ) : null}

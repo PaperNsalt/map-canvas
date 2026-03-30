@@ -9,6 +9,7 @@ import {
   initialState,
   locationPresets,
   mapStyles,
+  textPlacementPresets,
   themePresets,
 } from "../data/editorConfig";
 import "leaflet/dist/leaflet.css";
@@ -34,6 +35,10 @@ function EditorPage() {
   const [primaryColor, setPrimaryColor] = useState(initialState.primaryColor);
   const [backgroundColor, setBackgroundColor] = useState(initialState.backgroundColor);
   const [accentColor, setAccentColor] = useState(initialState.accentColor);
+  const [textColor, setTextColor] = useState(initialState.textColor);
+  const [selectedTextPlacementId, setSelectedTextPlacementId] = useState(
+    initialState.selectedTextPlacementId
+  );
   const [isSearching, setIsSearching] = useState(false);
   const [searchFeedback, setSearchFeedback] = useState("");
   const [isExporting, setIsExporting] = useState(false);
@@ -46,6 +51,13 @@ function EditorPage() {
   const selectedMapStyle = useMemo(
     () => mapStyles.find((style) => style.id === selectedMapStyleId) ?? mapStyles[0],
     [selectedMapStyleId]
+  );
+
+  const selectedTextPlacement = useMemo(
+    () =>
+      textPlacementPresets.find((placement) => placement.id === selectedTextPlacementId) ??
+      textPlacementPresets[0],
+    [selectedTextPlacementId]
   );
 
   const tileConfig = useMemo(() => {
@@ -77,8 +89,8 @@ function EditorPage() {
 
     return showPlaceNames
       ? {
-          url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          attribution: "&copy; OpenStreetMap contributors",
+          url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+          attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
         }
       : {
           url: "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
@@ -134,6 +146,7 @@ function EditorPage() {
     setPrimaryColor(theme.primaryColor);
     setBackgroundColor(theme.backgroundColor);
     setAccentColor(theme.accentColor);
+    setTextColor(theme.textColor ?? "#ffffff");
   };
 
   const handleLocationPreset = (preset) => {
@@ -206,8 +219,20 @@ function EditorPage() {
       setIsExporting(true);
 
       let imageData = "";
+      let exportWidth = 0;
+      let exportHeight = 0;
+      const rect = previewRef.current.getBoundingClientRect();
 
       try {
+        imageData = await toPng(previewRef.current, {
+          cacheBust: true,
+          allowTaint: false,
+          backgroundColor,
+          pixelRatio: 2,
+        });
+        exportWidth = Math.max(Math.round(rect.width * 2), 1);
+        exportHeight = Math.max(Math.round(rect.height * 2), 1);
+      } catch {
         const canvas = await html2canvas(previewRef.current, {
           useCORS: true,
           allowTaint: false,
@@ -215,12 +240,8 @@ function EditorPage() {
           scale: 2,
         });
         imageData = canvas.toDataURL("image/png");
-      } catch {
-        imageData = await toPng(previewRef.current, {
-          cacheBust: true,
-          backgroundColor,
-          pixelRatio: 2,
-        });
+        exportWidth = canvas.width;
+        exportHeight = canvas.height;
       }
 
       const fileBaseName = (title || "map-canvas-poster")
@@ -230,20 +251,23 @@ function EditorPage() {
 
       if (format === "pdf") {
         const pdf = new jsPDF({
-          orientation: canvas.width >= canvas.height ? "landscape" : "portrait",
+          orientation: exportWidth >= exportHeight ? "landscape" : "portrait",
           unit: "px",
-          format: [canvas.width, canvas.height],
+          format: [exportWidth, exportHeight],
         });
 
-        pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height);
+        pdf.addImage(imageData, "PNG", 0, 0, exportWidth, exportHeight);
         pdf.save(`${fileBaseName || "map-canvas-poster"}.pdf`);
+        setSearchFeedback("Preview downloaded as PDF.");
         return;
       }
 
       const link = document.createElement("a");
       link.href = imageData;
       link.download = `${fileBaseName || "map-canvas-poster"}.png`;
+      document.body.appendChild(link);
       link.click();
+      link.remove();
       setSearchFeedback(`Preview downloaded as ${format.toUpperCase()}.`);
     } catch {
       setSearchFeedback("Preview export failed. Try another map style or search again.");
@@ -270,6 +294,8 @@ function EditorPage() {
       primaryColor,
       backgroundColor,
       accentColor,
+      textColor,
+      selectedTextPlacementId,
     };
 
     localStorage.setItem("map-canvas-design", JSON.stringify(design));
@@ -294,6 +320,8 @@ function EditorPage() {
     setPrimaryColor(initialState.primaryColor);
     setBackgroundColor(initialState.backgroundColor);
     setAccentColor(initialState.accentColor);
+    setTextColor(initialState.textColor);
+    setSelectedTextPlacementId(initialState.selectedTextPlacementId);
     setSearchFeedback("Design reset to defaults.");
   };
 
@@ -328,10 +356,15 @@ function EditorPage() {
             setBackgroundColor={setBackgroundColor}
             accentColor={accentColor}
             setAccentColor={setAccentColor}
+            textColor={textColor}
+            setTextColor={setTextColor}
             title={title}
             setTitle={setTitle}
             subtitle={subtitle}
             setSubtitle={setSubtitle}
+            textPlacementPresets={textPlacementPresets}
+            selectedTextPlacementId={selectedTextPlacementId}
+            setSelectedTextPlacementId={setSelectedTextPlacementId}
             showTitle={showTitle}
             setShowTitle={setShowTitle}
             showCoordinates={showCoordinates}
@@ -371,9 +404,11 @@ function EditorPage() {
             showTitle={showTitle}
             selectedTheme={selectedTheme}
             accentColor={accentColor}
+            textColor={textColor}
             title={title}
             subtitle={subtitle}
             showCoordinates={showCoordinates}
+            selectedTextPlacement={selectedTextPlacement}
             selectedMapStyle={selectedMapStyle}
             posterSize={posterSize}
             orientation={orientation}

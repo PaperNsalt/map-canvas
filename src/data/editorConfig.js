@@ -39,6 +39,7 @@ export const themePresets = [
     primaryColor: "#2563eb",
     backgroundColor: "#f8fafc",
     accentColor: "#f97316",
+    textColor: "#ffffff",
     mapFilter: "saturate(1.05) contrast(1.05)",
   },
   {
@@ -54,6 +55,7 @@ export const themePresets = [
     primaryColor: "#9a3412",
     backgroundColor: "#f4e7d7",
     accentColor: "#d97706",
+    textColor: "#fff7ed",
     mapFilter:
       "sepia(0.35) saturate(0.9) contrast(0.96) brightness(1.02) hue-rotate(-10deg)",
   },
@@ -70,6 +72,7 @@ export const themePresets = [
     primaryColor: "#38bdf8",
     backgroundColor: "#0f172a",
     accentColor: "#a855f7",
+    textColor: "#f8fafc",
     mapFilter: "invert(1) hue-rotate(180deg) saturate(0.55) contrast(1.1)",
   },
   {
@@ -85,8 +88,40 @@ export const themePresets = [
     primaryColor: "#ec4899",
     backgroundColor: "#fdf2f8",
     accentColor: "#8b5cf6",
+    textColor: "#ffffff",
     mapFilter:
       "saturate(0.9) contrast(0.98) brightness(1.04) hue-rotate(8deg)",
+  },
+];
+
+export const textPlacementPresets = [
+  {
+    id: "top-center",
+    name: "Top Center",
+    description: "Classic centered title at the top.",
+    outerClass: "inset-x-4 top-4 md:inset-x-6 md:top-6",
+    innerClass: "mx-auto max-w-xl px-2 text-center",
+  },
+  {
+    id: "center-stage",
+    name: "Center Stage",
+    description: "Feature the title in the middle of the map.",
+    outerClass: "inset-x-4 top-1/2 -translate-y-1/2 md:inset-x-10",
+    innerClass: "mx-auto max-w-2xl px-4 text-center",
+  },
+  {
+    id: "bottom-left",
+    name: "Bottom Left",
+    description: "Editorial caption tucked into the lower corner.",
+    outerClass: "bottom-6 left-4 right-4 md:bottom-8 md:left-8 md:right-auto",
+    innerClass: "max-w-md text-left",
+  },
+  {
+    id: "bottom-center",
+    name: "Bottom Center",
+    description: "Balanced title treatment near the footer.",
+    outerClass: "inset-x-4 bottom-6 md:inset-x-10 md:bottom-8",
+    innerClass: "mx-auto max-w-xl px-2 text-center",
   },
 ];
 
@@ -141,4 +176,6 @@ export const initialState = {
   primaryColor: "#2563eb",
   backgroundColor: "#f8fafc",
   accentColor: "#f97316",
+  textColor: "#ffffff",
+  selectedTextPlacementId: "top-center",
 };
