@@ -105,7 +105,7 @@ function PlacementCard({ placement, selected, onSelect }) {
   );
 }
 
-function EditorSidebar(props) {
+function SidebarContent(props) {
   const {
     searchQuery,
     setSearchQuery,
@@ -150,37 +150,21 @@ function EditorSidebar(props) {
     setZoom,
     centerMap,
   } = props;
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <aside className="xl:sticky xl:top-28 xl:self-start">
-      <div className="rounded-[1.6rem] border border-gray-200/80 bg-white/80 p-3 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 md:rounded-[2rem] md:p-5">
-        <div className="rounded-[1.25rem] border border-gray-200/80 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-white/5">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
-                Customize Your Map
-              </p>
-              <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
-                Shape the location, style, and text details from this sidebar.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setIsMobileOpen((current) => !current)}
-              className="shrink-0 rounded-2xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] xl:hidden dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-            >
-              {isMobileOpen ? "Hide Sidebar" : "Open Sidebar"}
-            </button>
-          </div>
+    <>
+      <div className="rounded-[1.25rem] border border-gray-200/80 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
+            Customize Your Map
+          </p>
+          <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+            Shape the location, style, and text details from this sidebar.
+          </p>
         </div>
+      </div>
 
-        <div
-          className={`mt-3 space-y-3 overflow-y-auto md:space-y-4 xl:mt-4 xl:max-h-[calc(100vh-12rem)] xl:overflow-y-auto ${
-            isMobileOpen ? "max-h-[65vh] pr-1" : "max-h-0 overflow-hidden xl:max-h-[calc(100vh-12rem)]"
-          }`}
-        >
+      <div className="mt-3 space-y-3 overflow-y-auto pr-1 md:space-y-4">
         <SidebarSection title="A. Location">
           <div>
             <ControlLabel>Search</ControlLabel>
@@ -426,9 +410,49 @@ function EditorSidebar(props) {
             save, reset, and download what you see in the preview.
           </p>
         </SidebarSection>
+      </div>
+    </>
+  );
+}
+
+function EditorSidebar(props) {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  return (
+    <>
+      <div className="fixed left-0 top-1/2 z-[680] -translate-y-1/2 xl:hidden">
+        <div className="flex items-center">
+          <div
+            className={`max-h-[78vh] overflow-hidden transition-[width,opacity] duration-300 ${
+              isMobileOpen ? "w-[min(84vw,360px)] opacity-100" : "w-0 opacity-0"
+            }`}
+          >
+            <div className="h-full rounded-r-[1.6rem] border border-l-0 border-gray-200/80 bg-white/95 p-3 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-[#0f172ae8]">
+              <div className="max-h-[78vh] overflow-y-auto pr-1">
+                <SidebarContent {...props} />
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsMobileOpen((current) => !current)}
+            className="ml-2 rounded-r-2xl rounded-l-none border border-l-0 border-gray-200 bg-white px-3 py-5 text-xs font-semibold uppercase tracking-[0.24em] text-gray-700 shadow-[0_12px_32px_rgba(15,23,42,0.12)] transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-[#111827] dark:text-gray-200 dark:hover:text-[#FFB36E]"
+            aria-label={isMobileOpen ? "Hide sidebar" : "Open sidebar"}
+          >
+            {isMobileOpen ? "Close" : "Edit"}
+          </button>
         </div>
       </div>
-    </aside>
+
+      <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
+        <div className="rounded-[2rem] border border-gray-200/80 bg-white/80 p-5 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+          <div className="max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
+            <SidebarContent {...props} />
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }
 
