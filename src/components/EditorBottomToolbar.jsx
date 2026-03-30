@@ -33,14 +33,15 @@ function EditorBottomToolbar(props) {
 
   return (
     <div className="fixed inset-x-2 bottom-2 z-[700] md:inset-x-8 md:bottom-4">
-      <div className="mx-auto max-w-6xl rounded-[1.35rem] border border-gray-200/80 bg-white/92 p-2 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-[#0f172acc] md:rounded-[1.8rem] md:p-3">
-        <div className="flex flex-col gap-3 rounded-[1.1rem] border border-gray-200/80 bg-white/70 px-3 py-3 dark:border-white/10 dark:bg-white/5 md:flex-row md:items-center md:justify-between md:rounded-[1.35rem] md:px-4">
+      <div className="mx-auto max-w-6xl rounded-[1.35rem] border border-gray-200/80 bg-white/94 p-2 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-[#0f172ae8] md:rounded-[1.8rem] md:p-3">
+        <div className="flex flex-col gap-3 rounded-[1.1rem] border border-gray-200/80 bg-white/75 px-3 py-3 dark:border-white/10 dark:bg-white/5 md:flex-row md:items-center md:justify-between md:rounded-[1.35rem] md:px-4">
           <div>
+            <div className="mx-auto mb-3 h-1.5 w-14 rounded-full bg-gray-300/90 md:hidden dark:bg-white/20" />
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
               Quick Controls
             </p>
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Customize in the sidebar, then save or download from this bar.
+              Use this bottom sheet for actions, zoom, and quick map changes.
             </p>
           </div>
 
@@ -50,13 +51,14 @@ function EditorBottomToolbar(props) {
               onClick={() => setIsMinimized((current) => !current)}
               className="rounded-2xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
             >
-              {isMinimized ? "Expand Toolbar" : "Minimize Toolbar"}
+              {isMinimized ? "Open Controls" : "Hide Controls"}
             </button>
           </div>
         </div>
 
         {isMinimized ? null : (
-          <div className="mt-3 grid gap-2 md:gap-3 xl:grid-cols-[0.85fr_1.05fr_1fr_0.95fr_1.2fr]">
+          <div className="mt-3 max-h-[55vh] overflow-y-auto overscroll-contain pr-1 md:max-h-none md:overflow-visible">
+            <div className="grid gap-2 md:gap-3 xl:grid-cols-[0.85fr_1.05fr_1fr_0.95fr_1.2fr]">
             <ToolbarCard title="Zoom Controls">
               <div className="grid grid-cols-2 gap-2">
                 <button
@@ -77,8 +79,8 @@ function EditorBottomToolbar(props) {
             </ToolbarCard>
 
             <ToolbarCard title="Style Switcher">
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {mapStyles.slice(0, 4).map((style) => (
+              <div className="grid grid-cols-2 gap-2">
+                {mapStyles.slice(0, 6).map((style) => (
                   <button
                     key={style.id}
                     type="button"
@@ -168,6 +170,7 @@ function EditorBottomToolbar(props) {
                 </button>
               </div>
             </ToolbarCard>
+            </div>
           </div>
         )}
       </div>
