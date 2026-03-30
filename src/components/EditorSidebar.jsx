@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+const interactiveCardClass =
+  "transform-gpu transition-[transform,border-color,background-color,box-shadow,color,opacity] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(15,23,42,0.08)] active:scale-[0.98] active:translate-y-0";
+
+const interactiveButtonClass =
+  "transform-gpu transition-[transform,border-color,background-color,box-shadow,color] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] active:scale-[0.98] active:translate-y-0";
+
 function ControlLabel({ children }) {
   return (
     <label className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500 dark:text-gray-400">
@@ -10,7 +16,7 @@ function ControlLabel({ children }) {
 
 function SidebarSection({ title, children }) {
   return (
-    <section className="rounded-[1.25rem] border border-gray-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5 md:rounded-[1.6rem] md:p-4">
+    <section className="rounded-[1.25rem] border border-gray-200/80 bg-white/70 p-3 transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(15,23,42,0.06)] dark:border-white/10 dark:bg-white/5 md:rounded-[1.6rem] md:p-4">
       <h2 className="text-sm font-semibold tracking-[0.04em] text-gray-900 dark:text-white">
         {title}
       </h2>
@@ -24,7 +30,7 @@ function MapStyleCard({ style, selected, onSelect }) {
     <button
       type="button"
       onClick={() => onSelect(style.id)}
-      className={`rounded-[1.1rem] border p-3 text-left transition md:rounded-[1.35rem] ${
+      className={`rounded-[1.1rem] border p-3 text-left md:rounded-[1.35rem] ${interactiveCardClass} ${
         selected
           ? "border-[#FF9B42] bg-[#FF9B42]/10"
           : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
@@ -50,7 +56,7 @@ function ThemeCard({ theme, selected, onSelect }) {
     <button
       type="button"
       onClick={() => onSelect(theme)}
-      className={`rounded-[1.1rem] border p-3 text-left transition md:rounded-[1.35rem] ${
+      className={`rounded-[1.1rem] border p-3 text-left md:rounded-[1.35rem] ${interactiveCardClass} ${
         selected
           ? "border-[#FF9B42] bg-[#FF9B42]/10"
           : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
@@ -80,7 +86,7 @@ function PlacementCard({ placement, selected, onSelect }) {
     <button
       type="button"
       onClick={() => onSelect(placement.id)}
-      className={`rounded-[1.1rem] border p-3 text-left transition md:rounded-[1.35rem] ${
+      className={`rounded-[1.1rem] border p-3 text-left md:rounded-[1.35rem] ${interactiveCardClass} ${
         selected
           ? "border-[#FF9B42] bg-[#FF9B42]/10"
           : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
@@ -174,12 +180,12 @@ function SidebarContent(props) {
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search for a location..."
-                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
+                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition-[transform,border-color,box-shadow] duration-200 ease-out focus:-translate-y-0.5 focus:border-[#FF9B42] focus:shadow-[0_0_0_4px_rgba(255,155,66,0.12)] dark:border-white/10 dark:bg-white/5"
               />
               <button
                 type="submit"
                 disabled={isSearching}
-                className="w-full rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
+                className={`w-full rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white hover:bg-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] ${interactiveButtonClass}`}
               >
                 {isSearching ? "Searching..." : "Set Location"}
               </button>
@@ -200,7 +206,7 @@ function SidebarContent(props) {
                 key={preset.id}
                 type="button"
                 onClick={() => handleLocationPreset(preset)}
-                className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
+                className={`rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${interactiveButtonClass}`}
               >
                 {preset.label}
               </button>
@@ -277,20 +283,20 @@ function SidebarContent(props) {
 
         <SidebarSection title="E. Text & Labels">
           <div className="space-y-3">
-            <input
-              type="text"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              placeholder="Title"
-              className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
-            />
-            <input
-              type="text"
-              value={subtitle}
-              onChange={(event) => setSubtitle(event.target.value)}
-              placeholder="Subtitle"
-              className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
-            />
+              <input
+                type="text"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                placeholder="Title"
+                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition-[transform,border-color,box-shadow] duration-200 ease-out focus:-translate-y-0.5 focus:border-[#FF9B42] focus:shadow-[0_0_0_4px_rgba(255,155,66,0.12)] dark:border-white/10 dark:bg-white/5"
+              />
+              <input
+                type="text"
+                value={subtitle}
+                onChange={(event) => setSubtitle(event.target.value)}
+                placeholder="Subtitle"
+                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition-[transform,border-color,box-shadow] duration-200 ease-out focus:-translate-y-0.5 focus:border-[#FF9B42] focus:shadow-[0_0_0_4px_rgba(255,155,66,0.12)] dark:border-white/10 dark:bg-white/5"
+              />
           </div>
           <label className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold dark:border-white/10 dark:bg-white/5">
             Show Title
@@ -340,10 +346,10 @@ function SidebarContent(props) {
             <div className="mt-3 grid grid-cols-3 gap-2">
               {["a4", "square", "custom"].map((size) => (
                 <button
-                  key={size}
-                  type="button"
-                  onClick={() => setPosterSize(size)}
-                  className={`rounded-2xl border px-3 py-3 text-sm font-semibold transition ${
+                key={size}
+                type="button"
+                onClick={() => setPosterSize(size)}
+                  className={`rounded-2xl border px-3 py-3 text-sm font-semibold ${interactiveButtonClass} ${
                     posterSize === size
                       ? "border-[#FF9B42] bg-[#FF9B42]/10 text-[#C76614] dark:text-[#FFB36E]"
                       : "border-gray-200 bg-white text-gray-700 hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
@@ -359,10 +365,10 @@ function SidebarContent(props) {
             <div className="mt-3 grid grid-cols-2 gap-2">
               {["portrait", "landscape"].map((option) => (
                 <button
-                  key={option}
-                  type="button"
-                  onClick={() => setOrientation(option)}
-                  className={`rounded-2xl border px-3 py-3 text-sm font-semibold capitalize transition ${
+                key={option}
+                type="button"
+                onClick={() => setOrientation(option)}
+                  className={`rounded-2xl border px-3 py-3 text-sm font-semibold capitalize ${interactiveButtonClass} ${
                     orientation === option
                       ? "border-[#FF9B42] bg-[#FF9B42]/10 text-[#C76614] dark:text-[#FFB36E]"
                       : "border-gray-200 bg-white text-gray-700 hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
@@ -395,7 +401,7 @@ function SidebarContent(props) {
           <button
             type="button"
             onClick={centerMap}
-            className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
+            className={`w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${interactiveButtonClass}`}
           >
             Center Map
           </button>
@@ -423,11 +429,11 @@ function EditorSidebar(props) {
       <div className="fixed left-0 top-1/2 z-[680] -translate-y-1/2 xl:hidden">
         <div className="flex items-center">
           <div
-            className={`max-h-[78vh] overflow-hidden transition-[width,opacity] duration-300 ${
+            className={`max-h-[78vh] overflow-hidden transition-[width,opacity,transform] duration-300 ease-out ${
               isMobileOpen ? "w-[min(84vw,360px)] opacity-100" : "w-0 opacity-0"
             }`}
           >
-            <div className="h-full rounded-r-[1.6rem] border border-l-0 border-gray-200/80 bg-white/95 p-3 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-[#0f172ae8]">
+            <div className={`h-full rounded-r-[1.6rem] border border-l-0 border-gray-200/80 bg-white/95 p-3 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 ease-out dark:border-white/10 dark:bg-[#0f172ae8] ${isMobileOpen ? "translate-x-0" : "-translate-x-3"}`}>
               <div className="max-h-[78vh] overflow-y-auto pr-1">
                 <SidebarContent {...props} />
               </div>
@@ -437,7 +443,7 @@ function EditorSidebar(props) {
           <button
             type="button"
             onClick={() => setIsMobileOpen((current) => !current)}
-            className="ml-2 rounded-r-2xl rounded-l-none border border-l-0 border-gray-200 bg-white px-3 py-5 text-xs font-semibold uppercase tracking-[0.24em] text-gray-700 shadow-[0_12px_32px_rgba(15,23,42,0.12)] transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-[#111827] dark:text-gray-200 dark:hover:text-[#FFB36E]"
+            className={`ml-2 rounded-r-2xl rounded-l-none border border-l-0 border-gray-200 bg-white px-3 py-5 text-xs font-semibold uppercase tracking-[0.24em] text-gray-700 shadow-[0_12px_32px_rgba(15,23,42,0.12)] hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-[#111827] dark:text-gray-200 dark:hover:text-[#FFB36E] ${interactiveButtonClass}`}
             aria-label={isMobileOpen ? "Hide sidebar" : "Open sidebar"}
           >
             {isMobileOpen ? "Close" : "Edit"}

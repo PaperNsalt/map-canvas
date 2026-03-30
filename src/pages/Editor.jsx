@@ -373,7 +373,7 @@ function EditorPage() {
 
   return (
     <main className="pb-56 pt-24 md:pb-48 md:pt-28">
-      <section className="rounded-[2rem] border border-gray-200/80 bg-[linear-gradient(135deg,_rgba(255,255,255,0.98),_rgba(248,244,238,0.96))] p-3 shadow-[0_30px_80px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(14,14,14,0.98),_rgba(24,24,24,0.98))] md:rounded-[2.5rem] md:p-8">
+      <section className="rounded-[2rem] border border-gray-200/80 bg-[linear-gradient(135deg,_rgba(255,255,255,0.98),_rgba(248,244,238,0.96))] p-3 shadow-[0_30px_80px_rgba(15,23,42,0.08)] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:shadow-[0_38px_90px_rgba(15,23,42,0.12)] dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(14,14,14,0.98),_rgba(24,24,24,0.98))] md:rounded-[2.5rem] md:p-8">
         <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-6">
           <EditorSidebar
             searchQuery={searchQuery}
