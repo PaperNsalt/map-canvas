@@ -18,6 +18,24 @@ export const mapStyles = [
       "bg-[linear-gradient(135deg,#fafaf9,#e7e5e4)] before:bg-stone-200/80 after:bg-stone-400/70",
   },
   {
+    id: "voyager",
+    name: "Voyager",
+    previewClass:
+      "bg-[linear-gradient(135deg,#dbeafe,#bfdbfe)] before:bg-sky-100/80 after:bg-blue-500/60",
+  },
+  {
+    id: "terrain",
+    name: "Terrain",
+    previewClass:
+      "bg-[linear-gradient(135deg,#ecfccb,#bbf7d0)] before:bg-lime-200/80 after:bg-emerald-700/55",
+  },
+  {
+    id: "blueprint",
+    name: "Blueprint",
+    previewClass:
+      "bg-[linear-gradient(135deg,#0f172a,#1d4ed8)] before:bg-blue-200/30 after:bg-cyan-200/70",
+  },
+  {
     id: "satellite",
     name: "Satellite",
     previewClass:
@@ -41,6 +59,23 @@ export const themePresets = [
     accentColor: "#f97316",
     textColor: "#ffffff",
     mapFilter: "saturate(1.05) contrast(1.05)",
+  },
+  {
+    id: "colorful",
+    name: "Colorful",
+    posterBackground: "#ecfeff",
+    posterBorder: "#67e8f9",
+    panelBackground: "rgba(255,255,255,0.8)",
+    ink: "#164e63",
+    secondaryInk: "#0f766e",
+    accent: "#f97316",
+    marker: "#f97316",
+    primaryColor: "#06b6d4",
+    backgroundColor: "#ecfeff",
+    accentColor: "#f97316",
+    textColor: "#ffffff",
+    mapFilter:
+      "saturate(1.25) contrast(1.06) brightness(1.02) hue-rotate(-6deg)",
   },
   {
     id: "vintage",
@@ -91,6 +126,40 @@ export const themePresets = [
     textColor: "#ffffff",
     mapFilter:
       "saturate(0.9) contrast(0.98) brightness(1.04) hue-rotate(8deg)",
+  },
+  {
+    id: "3d-glow",
+    name: "3D Glow",
+    posterBackground: "#111827",
+    posterBorder: "#60a5fa",
+    panelBackground: "rgba(15,23,42,0.74)",
+    ink: "#eff6ff",
+    secondaryInk: "#bfdbfe",
+    accent: "#22d3ee",
+    marker: "#22d3ee",
+    primaryColor: "#60a5fa",
+    backgroundColor: "#111827",
+    accentColor: "#a78bfa",
+    textColor: "#f8fafc",
+    mapFilter:
+      "contrast(1.18) saturate(1.2) brightness(0.98) hue-rotate(14deg)",
+  },
+  {
+    id: "sunset-pop",
+    name: "Sunset Pop",
+    posterBackground: "#fff7ed",
+    posterBorder: "#fdba74",
+    panelBackground: "rgba(255,247,237,0.84)",
+    ink: "#7c2d12",
+    secondaryInk: "#c2410c",
+    accent: "#ea580c",
+    marker: "#ea580c",
+    primaryColor: "#fb7185",
+    backgroundColor: "#fff7ed",
+    accentColor: "#f59e0b",
+    textColor: "#fff7ed",
+    mapFilter:
+      "saturate(1.18) contrast(1.02) brightness(1.01) hue-rotate(-14deg)",
   },
 ];
 

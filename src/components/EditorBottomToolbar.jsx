@@ -40,27 +40,11 @@ function EditorBottomToolbar(props) {
               Quick Controls
             </p>
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Keep the map visible while adjusting the essentials.
+              Customize in the sidebar, then save or download from this bar.
             </p>
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <button
-              type="button"
-              onClick={() => exportPreview("png")}
-              disabled={isExporting}
-              className="rounded-2xl bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
-            >
-              {isExporting ? "Preparing..." : "Download PNG"}
-            </button>
-            <button
-              type="button"
-              onClick={() => exportPreview("pdf")}
-              disabled={isExporting}
-              className="rounded-2xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-            >
-              {isExporting ? "Preparing..." : "Download PDF"}
-            </button>
             <button
               type="button"
               onClick={() => setIsMinimized((current) => !current)}
@@ -93,8 +77,8 @@ function EditorBottomToolbar(props) {
             </ToolbarCard>
 
             <ToolbarCard title="Style Switcher">
-              <div className="grid grid-cols-3 gap-2">
-                {mapStyles.slice(0, 3).map((style) => (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {mapStyles.slice(0, 4).map((style) => (
                   <button
                     key={style.id}
                     type="button"
@@ -178,9 +162,9 @@ function EditorBottomToolbar(props) {
                 <button
                   type="button"
                   onClick={saveDesign}
-                  className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
+                  className="rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
                 >
-                  Share
+                  Save Design
                 </button>
               </div>
             </ToolbarCard>

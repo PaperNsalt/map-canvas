@@ -147,10 +147,6 @@ function EditorSidebar(props) {
     zoom,
     setZoom,
     centerMap,
-    saveDesign,
-    resetDesign,
-    exportPreview,
-    isExporting,
   } = props;
 
   return (
@@ -404,39 +400,11 @@ function EditorSidebar(props) {
           </p>
         </SidebarSection>
 
-        <SidebarSection title="H. Actions">
-          <div className="grid gap-3">
-            <button
-              type="button"
-              onClick={saveDesign}
-              className="rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
-            >
-              Save Design
-            </button>
-            <button
-              type="button"
-              onClick={resetDesign}
-              className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-            >
-              Reset
-            </button>
-            <button
-              type="button"
-              onClick={() => exportPreview("png")}
-              disabled={isExporting}
-              className="rounded-2xl bg-[#FF9B42] px-4 py-3 text-sm font-semibold text-black transition hover:bg-[#C76614] hover:text-white disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#FFB36E] dark:hover:bg-[#C76614] dark:hover:text-white"
-            >
-              {isExporting ? "Preparing..." : "Download PNG"}
-            </button>
-            <button
-              type="button"
-              onClick={() => exportPreview("pdf")}
-              disabled={isExporting}
-              className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
-            >
-              {isExporting ? "Preparing..." : "Download PDF"}
-            </button>
-          </div>
+        <SidebarSection title="H. Workflow">
+          <p className="text-sm leading-7 text-gray-600 dark:text-gray-300">
+            Use this panel to customize the poster, then use the bottom toolbar to
+            save, reset, and download what you see in the preview.
+          </p>
         </SidebarSection>
       </div>
     </aside>

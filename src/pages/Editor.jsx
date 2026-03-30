@@ -68,6 +68,13 @@ function EditorPage() {
       };
     }
 
+    if (selectedMapStyle.id === "terrain") {
+      return {
+        url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+        attribution: "Tiles &copy; Esri",
+      };
+    }
+
     if (selectedMapStyle.id === "dark") {
       return showPlaceNames
         ? {
@@ -83,6 +90,25 @@ function EditorPage() {
     if (selectedMapStyle.id === "minimal") {
       return {
         url: "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+        attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+      };
+    }
+
+    if (selectedMapStyle.id === "voyager") {
+      return showPlaceNames
+        ? {
+            url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+            attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+          }
+        : {
+            url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
+            attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+          };
+    }
+
+    if (selectedMapStyle.id === "blueprint") {
+      return {
+        url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
         attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
       };
     }
@@ -130,15 +156,29 @@ function EditorPage() {
   };
 
   const mapSurfaceStyle = {
-    filter: selectedTheme.mapFilter,
+    filter:
+      selectedMapStyle.id === "minimal"
+        ? `${selectedTheme.mapFilter} grayscale(0.9) contrast(1.12) brightness(1.04)`
+        : selectedMapStyle.id === "blueprint"
+          ? `${selectedTheme.mapFilter} grayscale(0.3) contrast(1.18) saturate(0.75) hue-rotate(165deg)`
+          : selectedTheme.mapFilter,
   };
 
   const mapTintStyle = {
     background:
       selectedMapStyle.id === "satellite"
         ? "transparent"
+        : selectedMapStyle.id === "blueprint"
+          ? "linear-gradient(135deg, rgba(15, 23, 42, 0.28), rgba(56, 189, 248, 0.18))"
+          : selectedMapStyle.id === "minimal"
+            ? "linear-gradient(135deg, rgba(250, 250, 249, 0.08), rgba(120, 113, 108, 0.04))"
         : `linear-gradient(135deg, ${backgroundColor}55, ${accentColor}22)`,
-    mixBlendMode: selectedMapStyle.id === "dark" ? "screen" : "multiply",
+    mixBlendMode:
+      selectedMapStyle.id === "dark"
+        ? "screen"
+        : selectedMapStyle.id === "blueprint"
+          ? "screen"
+          : "multiply",
   };
 
   const applyTheme = (theme) => {
@@ -378,10 +418,6 @@ function EditorPage() {
             zoom={zoom}
             setZoom={setZoom}
             centerMap={() => setMapCenter(initialState.mapCenter)}
-            saveDesign={saveDesign}
-            resetDesign={resetDesign}
-            exportPreview={exportPreview}
-            isExporting={isExporting}
           />
 
           <EditorMapPreview
