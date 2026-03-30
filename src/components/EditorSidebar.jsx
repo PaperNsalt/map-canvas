@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function ControlLabel({ children }) {
   return (
     <label className="text-xs font-semibold uppercase tracking-[0.24em] text-gray-500 dark:text-gray-400">
@@ -148,19 +150,37 @@ function EditorSidebar(props) {
     setZoom,
     centerMap,
   } = props;
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
     <aside className="xl:sticky xl:top-28 xl:self-start">
-      <div className="space-y-3 rounded-[1.6rem] border border-gray-200/80 bg-white/80 p-3 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 md:space-y-4 md:rounded-[2rem] md:p-5 xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
-            Customize Your Map
-          </p>
-          <p className="mt-3 text-sm leading-7 text-gray-600 dark:text-gray-300">
-            Shape the location, look, and poster details from this left panel.
-          </p>
+      <div className="rounded-[1.6rem] border border-gray-200/80 bg-white/80 p-3 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 md:rounded-[2rem] md:p-5">
+        <div className="rounded-[1.25rem] border border-gray-200/80 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
+                Customize Your Map
+              </p>
+              <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                Shape the location, style, and text details from this sidebar.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsMobileOpen((current) => !current)}
+              className="shrink-0 rounded-2xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] xl:hidden dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
+            >
+              {isMobileOpen ? "Hide Sidebar" : "Open Sidebar"}
+            </button>
+          </div>
         </div>
 
+        <div
+          className={`mt-3 space-y-3 overflow-y-auto md:space-y-4 xl:mt-4 xl:max-h-[calc(100vh-12rem)] xl:overflow-y-auto ${
+            isMobileOpen ? "max-h-[65vh] pr-1" : "max-h-0 overflow-hidden xl:max-h-[calc(100vh-12rem)]"
+          }`}
+        >
         <SidebarSection title="A. Location">
           <div>
             <ControlLabel>Search</ControlLabel>
@@ -406,6 +426,7 @@ function EditorSidebar(props) {
             save, reset, and download what you see in the preview.
           </p>
         </SidebarSection>
+        </div>
       </div>
     </aside>
   );
