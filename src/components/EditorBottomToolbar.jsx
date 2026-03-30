@@ -3,7 +3,7 @@ import { useState } from "react";
 function ToolbarCard({ title, children, className = "" }) {
   return (
     <div
-      className={`rounded-[1.3rem] flex justify-center items-center flex-col border border-gray-200/80 bg-white/80 p-3 dark:border-white/10 dark:bg-white/5 ${className}`}
+      className={`rounded-[1.1rem] border border-gray-200/80 bg-white/80 p-3 dark:border-white/10 dark:bg-white/5 md:rounded-[1.3rem] ${className}`}
     >
       <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400">
         {title}
@@ -32,9 +32,9 @@ function EditorBottomToolbar(props) {
   const [isMinimized, setIsMinimized] = useState(false);
 
   return (
-    <div className="fixed inset-x-4 bottom-4 z-[700] md:inset-x-8">
-      <div className="mx-auto max-w-6xl rounded-[1.8rem] border border-gray-200/80 bg-white/88 p-3 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-[#0f172acc]">
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.35rem] border border-gray-200/80 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+    <div className="fixed inset-x-2 bottom-2 z-[700] md:inset-x-8 md:bottom-4">
+      <div className="mx-auto max-w-6xl rounded-[1.35rem] border border-gray-200/80 bg-white/92 p-2 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-[#0f172acc] md:rounded-[1.8rem] md:p-3">
+        <div className="flex flex-col gap-3 rounded-[1.1rem] border border-gray-200/80 bg-white/70 px-3 py-3 dark:border-white/10 dark:bg-white/5 md:flex-row md:items-center md:justify-between md:rounded-[1.35rem] md:px-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
               Quick Controls
@@ -44,7 +44,7 @@ function EditorBottomToolbar(props) {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <button
               type="button"
               onClick={() => exportPreview("png")}
@@ -64,13 +64,13 @@ function EditorBottomToolbar(props) {
         </div>
 
         {isMinimized ? null : (
-          <div className="mt-3 grid gap-3 xl:grid-cols-[0.85fr_1.05fr_1fr_0.95fr_1.2fr]">
+          <div className="mt-3 grid gap-2 md:gap-3 xl:grid-cols-[0.85fr_1.05fr_1fr_0.95fr_1.2fr]">
             <ToolbarCard title="Zoom Controls">
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setZoom((current) => Math.min(18, current + 1))}
-                  className="rounded-2xl bg-black px-2 py-2 text-base font-semibold text-white transition hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
+                  className="rounded-2xl bg-black px-2 py-2 text-sm font-semibold text-white transition hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] md:text-base"
                 >
                   Zoom In +
                 </button>
@@ -85,13 +85,13 @@ function EditorBottomToolbar(props) {
             </ToolbarCard>
 
             <ToolbarCard title="Style Switcher">
-              <div className="grid grid-cols-3 gap-1">
+              <div className="grid grid-cols-3 gap-2">
                 {mapStyles.slice(0, 3).map((style) => (
                   <button
                     key={style.id}
                     type="button"
                     onClick={() => setSelectedMapStyleId(style.id)}
-                    className={`rounded-2xl px-1 py-2 text-sm font-semibold transition ${
+                    className={`rounded-2xl px-2 py-2 text-xs font-semibold transition md:text-sm ${
                       selectedMapStyleId === style.id
                         ? "bg-[#FF9B42] text-black"
                         : "border border-gray-200 bg-white text-gray-700 hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
@@ -138,7 +138,7 @@ function EditorBottomToolbar(props) {
                 <button
                   type="button"
                   onClick={() => setShowCoordinates((current) => !current)}
-                  className={`rounded-2xl px-1 py-1 text-sm font-semibold transition ${
+                  className={`rounded-2xl px-2 py-3 text-sm font-semibold transition ${
                     showCoordinates
                       ? "bg-[#FF9B42] text-black"
                       : "border border-gray-200 bg-white text-gray-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
@@ -150,7 +150,7 @@ function EditorBottomToolbar(props) {
             </ToolbarCard>
 
             <ToolbarCard title="Export Actions">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <button
                   type="button"
                   onClick={() => exportPreview("png")}

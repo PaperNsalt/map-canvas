@@ -461,9 +461,9 @@ function EditorPage() {
   };
 
   return (
-    <main className="pb-44 pt-28">
-      <section className="rounded-[2.5rem] border border-gray-200/80 bg-[linear-gradient(135deg,_rgba(255,255,255,0.98),_rgba(248,244,238,0.96))] p-5 shadow-[0_30px_80px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(14,14,14,0.98),_rgba(24,24,24,0.98))] md:p-8">
-        <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+    <main className="pb-56 pt-24 md:pb-48 md:pt-28">
+      <section className="rounded-[2rem] border border-gray-200/80 bg-[linear-gradient(135deg,_rgba(255,255,255,0.98),_rgba(248,244,238,0.96))] p-3 shadow-[0_30px_80px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(14,14,14,0.98),_rgba(24,24,24,0.98))] md:rounded-[2.5rem] md:p-8">
+        <div className="grid gap-4 xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-6">
           <EditorSidebar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -508,13 +508,13 @@ function EditorPage() {
             isExporting={isExporting}
           />
 
-          <div className="flex min-h-[calc(100vh-14rem)] items-center justify-center rounded-[2rem] border border-gray-200/80 bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.16),_transparent_34%),linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(245,240,234,0.96))] p-4 dark:border-white/10 dark:bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.12),_transparent_28%),linear-gradient(180deg,_rgba(255,255,255,0.04),_rgba(255,255,255,0.02))] md:p-8">
+          <div className="flex min-h-[calc(100vh-18rem)] items-center justify-center rounded-[1.6rem] border border-gray-200/80 bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.16),_transparent_34%),linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(245,240,234,0.96))] p-3 dark:border-white/10 dark:bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.12),_transparent_28%),linear-gradient(180deg,_rgba(255,255,255,0.04),_rgba(255,255,255,0.02))] md:min-h-[calc(100vh-14rem)] md:rounded-[2rem] md:p-8">
             <div
               ref={previewRef}
-              className={`mx-auto w-full ${previewSizeClass} rounded-[2.2rem] border p-4 shadow-[0_30px_80px_rgba(15,23,42,0.12)] md:p-5`}
+              className={`mx-auto w-full ${previewSizeClass} rounded-[1.7rem] border p-3 shadow-[0_30px_80px_rgba(15,23,42,0.12)] md:rounded-[2.2rem] md:p-5`}
               style={previewStyle}
             >
-              <div className="overflow-hidden rounded-[1.7rem] border border-black/10">
+              <div className="overflow-hidden rounded-[1.3rem] border border-black/10 md:rounded-[1.7rem]">
                 <div
                   className={`relative w-full overflow-hidden ${mapHeightClass}`}
                   style={mapSurfaceStyle}
@@ -566,41 +566,35 @@ function EditorPage() {
                     </div>
                   )}
                   <div
-                    className="pointer-events-none absolute inset-0 opacity-60"
+                    className="pointer-events-none absolute inset-0 opacity-55 md:opacity-60"
                     style={mapTintStyle}
                   />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/28 via-black/10 to-transparent md:h-36" />
                   {showTitle && hasActiveLocation ? (
-                    <div className="pointer-events-none absolute inset-x-6 top-6 z-[500]">
-                      <div
-                        className="mx-auto max-w-xl rounded-[1.6rem] border border-white/20 px-6 py-5 text-center shadow-[0_20px_50px_rgba(15,23,42,0.18)] backdrop-blur-md"
-                        style={{
-                          backgroundColor: `${selectedTheme.panelBackground}`,
-                          color: selectedTheme.ink,
-                        }}
-                      >
+                    <div className="pointer-events-none absolute inset-x-4 top-4 z-[500] md:inset-x-6 md:top-6">
+                      <div className="mx-auto max-w-xl px-2 text-center">
                         <p
-                          className="text-[10px] font-semibold uppercase tracking-[0.4em]"
+                          className="text-[10px] font-semibold uppercase tracking-[0.4em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
                           style={{ color: accentColor }}
                         >
                           Custom Map Poster
                         </p>
                         <h1
-                          className="mt-3 text-3xl leading-tight md:text-4xl"
+                          className="mt-3 text-2xl leading-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.55)] md:text-4xl"
                           style={{ fontFamily: "'Playfair Display', 'serif'" }}
                         >
                           {title || "Untitled location"}
                         </h1>
                         {subtitle ? (
                           <p
-                            className="mt-2 text-sm md:text-base"
-                            style={{ color: selectedTheme.secondaryInk }}
+                            className="mt-2 text-sm text-white/90 drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)] md:text-base"
                           >
                             {subtitle}
                           </p>
                         ) : null}
                         {showCoordinates ? (
                           <p
-                            className="mt-4 text-xs font-semibold uppercase tracking-[0.28em]"
+                            className="mt-4 text-xs font-semibold uppercase tracking-[0.28em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
                             style={{ color: accentColor }}
                           >
                             {mapCenter[0].toFixed(4)}, {mapCenter[1].toFixed(4)}
@@ -611,7 +605,7 @@ function EditorPage() {
                   ) : null}
                 </div>
 
-                <div className="border-t border-black/10 p-6 md:p-8" style={textPanelStyle}>
+                <div className="border-t border-black/10 p-4 md:p-8" style={textPanelStyle}>
                   <p
                     className="text-xs font-semibold uppercase tracking-[0.36em]"
                     style={{ color: accentColor }}

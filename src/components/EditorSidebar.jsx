@@ -8,7 +8,7 @@ function ControlLabel({ children }) {
 
 function SidebarSection({ title, children }) {
   return (
-    <section className="rounded-[1.6rem] border border-gray-200/80 bg-white/70 p-4 dark:border-white/10 dark:bg-white/5">
+    <section className="rounded-[1.25rem] border border-gray-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5 md:rounded-[1.6rem] md:p-4">
       <h2 className="text-sm font-semibold tracking-[0.04em] text-gray-900 dark:text-white">
         {title}
       </h2>
@@ -22,7 +22,7 @@ function MapStyleCard({ style, selected, onSelect }) {
     <button
       type="button"
       onClick={() => onSelect(style.id)}
-      className={`rounded-[1.35rem] border p-3 text-left transition ${
+      className={`rounded-[1.1rem] border p-3 text-left transition md:rounded-[1.35rem] ${
         selected
           ? "border-[#FF9B42] bg-[#FF9B42]/10"
           : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
@@ -48,7 +48,7 @@ function ThemeCard({ theme, selected, onSelect }) {
     <button
       type="button"
       onClick={() => onSelect(theme)}
-      className={`rounded-[1.35rem] border p-3 text-left transition ${
+      className={`rounded-[1.1rem] border p-3 text-left transition md:rounded-[1.35rem] ${
         selected
           ? "border-[#FF9B42] bg-[#FF9B42]/10"
           : "border-gray-200 bg-white hover:border-[#FF9B42] dark:border-white/10 dark:bg-white/5"
@@ -120,7 +120,7 @@ function EditorSidebar(props) {
 
   return (
     <aside className="xl:sticky xl:top-28 xl:self-start">
-      <div className="max-h-[calc(100vh-8rem)] space-y-4 overflow-y-auto rounded-[2rem] border border-gray-200/80 bg-white/80 p-5 backdrop-blur-sm dark:border-white/10 dark:bg-white/5">
+      <div className="space-y-3 rounded-[1.6rem] border border-gray-200/80 bg-white/80 p-3 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 md:space-y-4 md:rounded-[2rem] md:p-5 xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
             Customize Your Map
@@ -174,7 +174,7 @@ function EditorSidebar(props) {
         </SidebarSection>
 
         <SidebarSection title="B. Map Style">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {mapStyles.map((style) => (
               <MapStyleCard
                 key={style.id}
@@ -187,7 +187,7 @@ function EditorSidebar(props) {
         </SidebarSection>
 
         <SidebarSection title="C. Theme Presets">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {themePresets.map((theme) => (
               <ThemeCard
                 key={theme.id}
