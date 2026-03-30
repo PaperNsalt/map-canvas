@@ -1,188 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import {
-  CircleMarker,
-  MapContainer,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
 import EditorBottomToolbar from "../components/EditorBottomToolbar";
+import EditorMapPreview from "../components/EditorMapPreview";
 import EditorSidebar from "../components/EditorSidebar";
+import {
+  initialState,
+  locationPresets,
+  mapStyles,
+  themePresets,
+} from "../data/editorConfig";
 import "leaflet/dist/leaflet.css";
-
-const mapStyles = [
-  {
-    id: "light",
-    name: "Light",
-    previewClass:
-      "bg-[linear-gradient(135deg,#f8fafc,#e2e8f0)] before:bg-white/80 after:bg-slate-300",
-  },
-  {
-    id: "dark",
-    name: "Dark",
-    previewClass:
-      "bg-[linear-gradient(135deg,#0f172a,#334155)] before:bg-slate-500/40 after:bg-slate-200/60",
-  },
-  {
-    id: "minimal",
-    name: "Minimal",
-    previewClass:
-      "bg-[linear-gradient(135deg,#fafaf9,#e7e5e4)] before:bg-stone-200/80 after:bg-stone-400/70",
-  },
-  {
-    id: "satellite",
-    name: "Satellite",
-    previewClass:
-      "bg-[linear-gradient(135deg,#365314,#1f2937)] before:bg-emerald-600/35 after:bg-amber-200/60",
-  },
-];
-
-const themePresets = [
-  {
-    id: "modern",
-    name: "Modern",
-    posterBackground: "#f8fafc",
-    posterBorder: "#cbd5e1",
-    panelBackground: "rgba(255,255,255,0.88)",
-    ink: "#0f172a",
-    secondaryInk: "#475569",
-    accent: "#2563eb",
-    marker: "#2563eb",
-    primaryColor: "#2563eb",
-    backgroundColor: "#f8fafc",
-    accentColor: "#f97316",
-    mapFilter: "saturate(1.05) contrast(1.05)",
-  },
-  {
-    id: "vintage",
-    name: "Vintage",
-    posterBackground: "#f4e7d7",
-    posterBorder: "#caa989",
-    panelBackground: "rgba(255,248,240,0.88)",
-    ink: "#3f2a1d",
-    secondaryInk: "#7a5c49",
-    accent: "#b45309",
-    marker: "#b45309",
-    primaryColor: "#9a3412",
-    backgroundColor: "#f4e7d7",
-    accentColor: "#d97706",
-    mapFilter:
-      "sepia(0.35) saturate(0.9) contrast(0.96) brightness(1.02) hue-rotate(-10deg)",
-  },
-  {
-    id: "dark-mode",
-    name: "Dark Mode",
-    posterBackground: "#0f172a",
-    posterBorder: "#334155",
-    panelBackground: "rgba(15,23,42,0.84)",
-    ink: "#f8fafc",
-    secondaryInk: "#cbd5e1",
-    accent: "#38bdf8",
-    marker: "#38bdf8",
-    primaryColor: "#38bdf8",
-    backgroundColor: "#0f172a",
-    accentColor: "#a855f7",
-    mapFilter: "invert(1) hue-rotate(180deg) saturate(0.55) contrast(1.1)",
-  },
-  {
-    id: "pastel",
-    name: "Pastel",
-    posterBackground: "#fdf2f8",
-    posterBorder: "#f9a8d4",
-    panelBackground: "rgba(255,255,255,0.86)",
-    ink: "#4a044e",
-    secondaryInk: "#86198f",
-    accent: "#ec4899",
-    marker: "#ec4899",
-    primaryColor: "#ec4899",
-    backgroundColor: "#fdf2f8",
-    accentColor: "#8b5cf6",
-    mapFilter:
-      "saturate(0.9) contrast(0.98) brightness(1.04) hue-rotate(8deg)",
-  },
-];
-
-const locationPresets = [
-  {
-    id: "manila",
-    label: "Manila",
-    center: [14.5995, 120.9842],
-    zoom: 13,
-    title: "Manila",
-    subtitle: "Philippines",
-  },
-  {
-    id: "new-york",
-    label: "New York",
-    center: [40.7128, -74.006],
-    zoom: 13,
-    title: "New York",
-    subtitle: "United States",
-  },
-  {
-    id: "paris",
-    label: "Paris",
-    center: [48.8566, 2.3522],
-    zoom: 13,
-    title: "Paris",
-    subtitle: "France",
-  },
-  {
-    id: "tokyo",
-    label: "Tokyo",
-    center: [35.6762, 139.6503],
-    zoom: 13,
-    title: "Tokyo",
-    subtitle: "Japan",
-  },
-];
-
-const initialState = {
-  selectedMapStyleId: "light",
-  selectedThemeId: "modern",
-  mapCenter: [14.5995, 120.9842],
-  zoom: 13,
-  title: "",
-  subtitle: "",
-  searchQuery: "",
-  selectedLocationLabel: "",
-  showCoordinates: true,
-  showPlaceNames: true,
-  posterSize: "a4",
-  orientation: "portrait",
-  primaryColor: "#2563eb",
-  backgroundColor: "#f8fafc",
-  accentColor: "#f97316",
-};
-
-function MapViewportController({ center, zoom, onViewChange }) {
-  const map = useMap();
-
-  useEffect(() => {
-    map.setView(center, zoom, { animate: true });
-  }, [center, map, zoom]);
-
-  useMapEvents({
-    moveend() {
-      const nextCenter = map.getCenter();
-      onViewChange({
-        center: [Number(nextCenter.lat.toFixed(4)), Number(nextCenter.lng.toFixed(4))],
-        zoom: map.getZoom(),
-      });
-    },
-    zoomend() {
-      const nextCenter = map.getCenter();
-      onViewChange({
-        center: [Number(nextCenter.lat.toFixed(4)), Number(nextCenter.lng.toFixed(4))],
-        zoom: map.getZoom(),
-      });
-    },
-  });
-
-  return null;
-}
 
 function EditorPage() {
   const previewRef = useRef(null);
@@ -508,139 +336,35 @@ function EditorPage() {
             isExporting={isExporting}
           />
 
-          <div className="flex min-h-[calc(100vh-18rem)] items-center justify-center rounded-[1.6rem] border border-gray-200/80 bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.16),_transparent_34%),linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(245,240,234,0.96))] p-3 dark:border-white/10 dark:bg-[radial-gradient(circle_at_top,_rgba(255,155,66,0.12),_transparent_28%),linear-gradient(180deg,_rgba(255,255,255,0.04),_rgba(255,255,255,0.02))] md:min-h-[calc(100vh-14rem)] md:rounded-[2rem] md:p-8">
-            <div
-              ref={previewRef}
-              className={`mx-auto w-full ${previewSizeClass} rounded-[1.7rem] border p-3 shadow-[0_30px_80px_rgba(15,23,42,0.12)] md:rounded-[2.2rem] md:p-5`}
-              style={previewStyle}
-            >
-              <div className="overflow-hidden rounded-[1.3rem] border border-black/10 md:rounded-[1.7rem]">
-                <div
-                  className={`relative w-full overflow-hidden ${mapHeightClass}`}
-                  style={mapSurfaceStyle}
-                >
-                  {hasActiveLocation ? (
-                    <MapContainer
-                      center={mapCenter}
-                      zoom={zoom}
-                      zoomControl={false}
-                      attributionControl={false}
-                      className="h-full w-full"
-                    >
-                      <TileLayer url={tileConfig.url} attribution={tileConfig.attribution} />
-                      <MapViewportController
-                        center={mapCenter}
-                        zoom={zoom}
-                        onViewChange={({ center, zoom: nextZoom }) => {
-                          setMapCenter(center);
-                          setZoom(nextZoom);
-                        }}
-                      />
-                      <CircleMarker
-                        center={mapCenter}
-                        radius={9}
-                        pathOptions={{
-                          color: backgroundColor,
-                          fillColor: primaryColor,
-                          fillOpacity: 1,
-                          weight: 3,
-                        }}
-                      />
-                    </MapContainer>
-                  ) : (
-                    <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.18),_transparent_30%),linear-gradient(160deg,_rgba(248,250,252,0.98),_rgba(226,232,240,0.9))] p-8 text-center dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_30%),linear-gradient(160deg,_rgba(15,23,42,0.98),_rgba(30,41,59,0.92))]">
-                      <div className="max-w-md">
-                        <p
-                          className="text-xs font-semibold uppercase tracking-[0.34em]"
-                          style={{ color: accentColor }}
-                        >
-                          Live Map Preview
-                        </p>
-                        <h2
-                          className="mt-5 text-3xl leading-tight"
-                          style={{ fontFamily: "'Playfair Display', 'serif'" }}
-                        >
-                          Start by searching for a location to create your custom map poster.
-                        </h2>
-                      </div>
-                    </div>
-                  )}
-                  <div
-                    className="pointer-events-none absolute inset-0 opacity-55 md:opacity-60"
-                    style={mapTintStyle}
-                  />
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/28 via-black/10 to-transparent md:h-36" />
-                  {showTitle && hasActiveLocation ? (
-                    <div className="pointer-events-none absolute inset-x-4 top-4 z-[500] md:inset-x-6 md:top-6">
-                      <div className="mx-auto max-w-xl px-2 text-center">
-                        <p
-                          className="text-[10px] font-semibold uppercase tracking-[0.4em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
-                          style={{ color: accentColor }}
-                        >
-                          Custom Map Poster
-                        </p>
-                        <h1
-                          className="mt-3 text-2xl leading-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.55)] md:text-4xl"
-                          style={{ fontFamily: "'Playfair Display', 'serif'" }}
-                        >
-                          {title || "Untitled location"}
-                        </h1>
-                        {subtitle ? (
-                          <p
-                            className="mt-2 text-sm text-white/90 drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)] md:text-base"
-                          >
-                            {subtitle}
-                          </p>
-                        ) : null}
-                        {showCoordinates ? (
-                          <p
-                            className="mt-4 text-xs font-semibold uppercase tracking-[0.28em] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
-                            style={{ color: accentColor }}
-                          >
-                            {mapCenter[0].toFixed(4)}, {mapCenter[1].toFixed(4)}
-                          </p>
-                        ) : null}
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-
-                <div className="border-t border-black/10 p-4 md:p-8" style={textPanelStyle}>
-                  <p
-                    className="text-xs font-semibold uppercase tracking-[0.36em]"
-                    style={{ color: accentColor }}
-                  >
-                    {selectedTheme.name} poster
-                  </p>
-                  <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
-                    {showCoordinates ? (
-                      <span
-                        className="rounded-full px-3 py-1"
-                        style={{
-                          backgroundColor: `${accentColor}18`,
-                          color: accentColor,
-                        }}
-                      >
-                        {mapCenter[0].toFixed(4)}, {mapCenter[1].toFixed(4)}
-                      </span>
-                    ) : null}
-                    <span style={{ color: selectedTheme.secondaryInk }}>
-                      {selectedMapStyle.name}
-                    </span>
-                    <span style={{ color: selectedTheme.secondaryInk }}>
-                      {posterSize.toUpperCase()} {orientation}
-                    </span>
-                  </div>
-                  <p
-                    className="mt-5 text-sm leading-7 md:text-base"
-                    style={{ color: selectedTheme.secondaryInk }}
-                  >
-                    {selectedLocationLabel || "Choose a location to begin your poster preview."}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <EditorMapPreview
+            previewRef={previewRef}
+            previewSizeClass={previewSizeClass}
+            previewStyle={previewStyle}
+            mapHeightClass={mapHeightClass}
+            mapSurfaceStyle={mapSurfaceStyle}
+            hasActiveLocation={hasActiveLocation}
+            mapCenter={mapCenter}
+            zoom={zoom}
+            tileConfig={tileConfig}
+            onViewChange={({ center, zoom: nextZoom }) => {
+              setMapCenter(center);
+              setZoom(nextZoom);
+            }}
+            backgroundColor={backgroundColor}
+            primaryColor={primaryColor}
+            mapTintStyle={mapTintStyle}
+            showTitle={showTitle}
+            selectedTheme={selectedTheme}
+            accentColor={accentColor}
+            title={title}
+            subtitle={subtitle}
+            showCoordinates={showCoordinates}
+            selectedMapStyle={selectedMapStyle}
+            posterSize={posterSize}
+            orientation={orientation}
+            selectedLocationLabel={selectedLocationLabel}
+            textPanelStyle={textPanelStyle}
+          />
         </div>
       </section>
 

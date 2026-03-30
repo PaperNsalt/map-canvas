@@ -55,6 +55,14 @@ function EditorBottomToolbar(props) {
             </button>
             <button
               type="button"
+              onClick={() => exportPreview("pdf")}
+              disabled={isExporting}
+              className="rounded-2xl bg-[#FF9B42] px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-[#C76614] hover:text-white disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#FFB36E] dark:hover:bg-[#C76614] dark:hover:text-white"
+            >
+              {isExporting ? "Preparing..." : "Download PDF"}
+            </button>
+            <button
+              type="button"
               onClick={() => setIsMinimized((current) => !current)}
               className="rounded-2xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E]"
             >
@@ -161,10 +169,11 @@ function EditorBottomToolbar(props) {
                 </button>
                 <button
                   type="button"
-                  disabled
-                  className="rounded-2xl border border-dashed border-gray-300 bg-gray-100 px-4 py-3 text-sm font-semibold text-gray-500 dark:border-white/10 dark:bg-white/5 dark:text-gray-400"
+                  onClick={() => exportPreview("pdf")}
+                  disabled={isExporting}
+                  className="rounded-2xl bg-[#FF9B42] px-4 py-3 text-sm font-semibold text-black transition hover:bg-[#C76614] hover:text-white disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#FFB36E] dark:hover:bg-[#C76614] dark:hover:text-white"
                 >
-                  PDF Premium
+                  PDF
                 </button>
                 <button
                   type="button"
