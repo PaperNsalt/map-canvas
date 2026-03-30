@@ -89,7 +89,7 @@ function EditorPage() {
 
     if (selectedMapStyle.id === "minimal") {
       return {
-        url: "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+        url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
         attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
       };
     }
@@ -108,7 +108,7 @@ function EditorPage() {
 
     if (selectedMapStyle.id === "blueprint") {
       return {
-        url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
+        url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
         attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
       };
     }
@@ -158,9 +158,9 @@ function EditorPage() {
   const mapSurfaceStyle = {
     filter:
       selectedMapStyle.id === "minimal"
-        ? `${selectedTheme.mapFilter} grayscale(0.9) contrast(1.12) brightness(1.04)`
+        ? `${selectedTheme.mapFilter} grayscale(0.4) contrast(1.16) brightness(1.06) saturate(0.72)`
         : selectedMapStyle.id === "blueprint"
-          ? `${selectedTheme.mapFilter} grayscale(0.3) contrast(1.18) saturate(0.75) hue-rotate(165deg)`
+          ? `${selectedTheme.mapFilter} grayscale(0.18) contrast(1.3) saturate(0.9) brightness(0.9) hue-rotate(175deg)`
           : selectedTheme.mapFilter,
   };
 
@@ -169,15 +169,15 @@ function EditorPage() {
       selectedMapStyle.id === "satellite"
         ? "transparent"
         : selectedMapStyle.id === "blueprint"
-          ? "linear-gradient(135deg, rgba(15, 23, 42, 0.28), rgba(56, 189, 248, 0.18))"
+          ? "linear-gradient(135deg, rgba(8, 47, 73, 0.54), rgba(29, 78, 216, 0.34) 48%, rgba(186, 230, 253, 0.12))"
           : selectedMapStyle.id === "minimal"
-            ? "linear-gradient(135deg, rgba(250, 250, 249, 0.08), rgba(120, 113, 108, 0.04))"
+            ? "linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(120, 113, 108, 0.02))"
         : `linear-gradient(135deg, ${backgroundColor}55, ${accentColor}22)`,
     mixBlendMode:
       selectedMapStyle.id === "dark"
         ? "screen"
         : selectedMapStyle.id === "blueprint"
-          ? "screen"
+          ? "multiply"
           : "multiply",
   };
 
