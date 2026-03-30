@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
 import EditorBottomToolbar from "../components/EditorBottomToolbar";
 import EditorMapPreview from "../components/EditorMapPreview";
@@ -204,13 +205,24 @@ function EditorPage() {
     try {
       setIsExporting(true);
 
-      const canvas = await html2canvas(previewRef.current, {
-        useCORS: true,
-        backgroundColor,
-        scale: 2,
-      });
+      let imageData = "";
 
-      const imageData = canvas.toDataURL("image/png");
+      try {
+        const canvas = await html2canvas(previewRef.current, {
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor,
+          scale: 2,
+        });
+        imageData = canvas.toDataURL("image/png");
+      } catch {
+        imageData = await toPng(previewRef.current, {
+          cacheBust: true,
+          backgroundColor,
+          pixelRatio: 2,
+        });
+      }
+
       const fileBaseName = (title || "map-canvas-poster")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -232,6 +244,9 @@ function EditorPage() {
       link.href = imageData;
       link.download = `${fileBaseName || "map-canvas-poster"}.png`;
       link.click();
+      setSearchFeedback(`Preview downloaded as ${format.toUpperCase()}.`);
+    } catch {
+      setSearchFeedback("Preview export failed. Try another map style or search again.");
     } finally {
       setIsExporting(false);
     }

@@ -77,6 +77,7 @@ function EditorMapPreview(props) {
                   url={tileConfig.url}
                   attribution={tileConfig.attribution}
                   crossOrigin="anonymous"
+                  referrerPolicy="no-referrer"
                 />
                 <MapViewportController center={mapCenter} zoom={zoom} onViewChange={onViewChange} />
                 <CircleMarker
