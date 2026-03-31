@@ -157,13 +157,7 @@ function EditorMapPreview(props) {
           </div>
 
           <div className="border-t border-black/10 p-4 md:p-8" style={textPanelStyle}>
-            <p
-              className="text-xs font-semibold uppercase tracking-[0.36em]"
-              style={{ color: accentColor }}
-            >
-              {selectedTheme.name} poster
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
+            <div className="flex flex-wrap items-center gap-3 text-sm">
               {showCoordinates ? (
                 <span
                   className="rounded-full px-3 py-1"
