@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 
+import IconComponent from "./IconComponent";
 import ThemeToggle from "./ThemeToggle";
 import logo from "../assets/MAPCANVAS LOGO.svg";
 
 const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "Editor", path: "/editor" },
-  { name: "Gallery", path: "/gallery" },
-  { name: "About", path: "/about" },
+  { name: "Home", path: "/", icon: "home" },
+  { name: "Editor", path: "/editor", icon: "editor" },
+  { name: "Gallery", path: "/gallery", icon: "gallery" },
+  { name: "About", path: "/about", icon: "info" },
 ];
 
 const mobileMenuVariants = {
@@ -32,7 +33,7 @@ function Navbar() {
 
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-[95%] max-w-6xl -translate-x-1/2">
-      <motion.div
+      <Motion.div
         initial={{ opacity: 0, y: -18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
@@ -41,7 +42,7 @@ function Navbar() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FF9B42]/70 to-transparent" />
 
         <div className="flex items-center justify-between gap-4">
-          <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+          <Motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
             <NavLink to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-3">
               <div className="relative flex size-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,_#FFB36E,_#FF8C2A)] shadow-lg shadow-[#FF9B42]/25">
                 <div className="absolute inset-[1px] rounded-2xl bg-white/85 dark:bg-black/55" />
@@ -61,13 +62,13 @@ function Navbar() {
                 </span>
               </div>
             </NavLink>
-          </motion.div>
+          </Motion.div>
 
           <div className="hidden items-center gap-2 rounded-full border border-gray-200/80 bg-white/70 px-2 py-2 shadow-inner shadow-black/5 dark:border-white/10 dark:bg-white/5 md:flex">
             {navLinks.map((link) => (
               <NavLink key={link.path} to={link.path} className="relative">
                 {({ isActive }) => (
-                  <motion.span
+                  <Motion.span
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.96 }}
                     className={`relative inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
@@ -78,14 +79,17 @@ function Navbar() {
                     style={{ fontFamily: "'Quicksand', 'sans-serif'" }}
                   >
                     {isActive && (
-                      <motion.span
+                      <Motion.span
                         layoutId="navbar-active-pill"
                         className="absolute inset-0 rounded-full bg-[#FF9B42]/18 dark:bg-[#FF9B42]/24"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
-                    <span className="relative z-10">{link.name}</span>
-                  </motion.span>
+                    <span className="relative z-10 flex items-center gap-2">
+                      <IconComponent name={link.icon} className="size-4" />
+                      <span>{link.name}</span>
+                    </span>
+                  </Motion.span>
                 )}
               </NavLink>
             ))}
@@ -96,7 +100,7 @@ function Navbar() {
               <ThemeToggle />
             </div>
 
-            <motion.button
+            <Motion.button
               type="button"
               onClick={() => setIsOpen((open) => !open)}
               whileHover={{ y: -2, scale: 1.02 }}
@@ -105,31 +109,20 @@ function Navbar() {
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
             >
-              <div className="relative h-4 w-5">
-                <motion.span
-                  animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute left-0 top-0 block h-0.5 w-5 rounded-full bg-current"
-                />
-                <motion.span
-                  animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-                  transition={{ duration: 0.18 }}
-                  className="absolute left-0 top-[7px] block h-0.5 w-5 rounded-full bg-current"
-                />
-                <motion.span
-                  animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute left-0 top-[14px] block h-0.5 w-5 rounded-full bg-current"
-                />
-              </div>
-            </motion.button>
+              <Motion.span
+                animate={isOpen ? { rotate: 90, scale: 0.96 } : { rotate: 0, scale: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                <IconComponent name={isOpen ? "close" : "menu"} className="size-5" />
+              </Motion.span>
+            </Motion.button>
           </div>
         </div>
-      </motion.div>
+      </Motion.div>
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <Motion.div
             variants={mobileMenuVariants}
             initial="hidden"
             animate="visible"
@@ -151,7 +144,7 @@ function Navbar() {
 
               <div className="flex flex-col gap-2">
                 {navLinks.map((link, index) => (
-                  <motion.div
+                  <Motion.div
                     key={link.path}
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -171,18 +164,21 @@ function Navbar() {
                     >
                       {({ isActive }) => (
                         <>
-                          <span>{link.name}</span>
+                          <span className="flex items-center gap-3">
+                            <IconComponent name={link.icon} className="size-5" />
+                            <span>{link.name}</span>
+                          </span>
                           <span className="text-sm text-[#C76614] dark:text-[#FFB36E]">
                             {isActive ? "Current" : "Open"}
                           </span>
                         </>
                       )}
                     </NavLink>
-                  </motion.div>
+                  </Motion.div>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
     </nav>

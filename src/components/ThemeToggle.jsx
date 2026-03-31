@@ -1,50 +1,13 @@
 import { useContext } from "react";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import { ThemeContext } from "../context/ThemeContext";
-
-function SunIcon({ className }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="4.2" />
-      <path d="M12 2.5v2.3" />
-      <path d="M12 19.2v2.3" />
-      <path d="m4.93 4.93 1.63 1.63" />
-      <path d="m17.44 17.44 1.63 1.63" />
-      <path d="M2.5 12h2.3" />
-      <path d="M19.2 12h2.3" />
-      <path d="m4.93 19.07 1.63-1.63" />
-      <path d="m17.44 6.56 1.63-1.63" />
-    </svg>
-  );
-}
-
-function MoonIcon({ className }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M20.6 14.1A8.8 8.8 0 0 1 9.9 3.4a.55.55 0 0 0-.77-.63A10.1 10.1 0 1 0 21.23 14.9a.55.55 0 0 0-.63-.8Z" />
-    </svg>
-  );
-}
+import IconComponent from "./IconComponent";
 
 function ThemeToggle() {
   const { darkMode, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <motion.button
+    <Motion.button
       type="button"
       onClick={toggleTheme}
       whileTap={{ scale: 0.96 }}
@@ -66,7 +29,8 @@ function ThemeToggle() {
       />
 
       <span className="pointer-events-none absolute inset-y-0 left-2 flex items-center">
-        <SunIcon
+        <IconComponent
+          name="sun"
           className={`size-3.5 transition-colors duration-300 ${
             darkMode ? "text-white/35" : "text-[#F4A21D]"
           }`}
@@ -74,34 +38,36 @@ function ThemeToggle() {
       </span>
 
       <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
-        <MoonIcon
+        <IconComponent
+          name="moon"
+          filled
           className={`size-3.5 transition-colors duration-300 ${
             darkMode ? "text-white/80" : "text-slate-400"
           }`}
         />
       </span>
 
-      <motion.span
+      <Motion.span
         layout
         transition={{ type: "spring", stiffness: 760, damping: 36 }}
         className="relative z-10 flex size-6 items-center justify-center rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.18),0_8px_18px_rgba(0,0,0,0.12)]"
       >
         <span className="absolute inset-[1px] rounded-full bg-[linear-gradient(180deg,_rgba(255,255,255,0.98),_rgba(242,242,242,0.9))]" />
-        <motion.span
-          key={darkMode ? "moon" : "sun"}
+        <Motion.span
+          key={darkMode ? "sun" : "moon"}
           initial={{ opacity: 0, rotate: -20, scale: 0.7 }}
           animate={{ opacity: 1, rotate: 0, scale: 1 }}
           transition={{ duration: 0.18 }}
           className="relative z-10"
         >
           {darkMode ? (
-            <MoonIcon className="size-3.5 text-slate-700" />
+            <IconComponent name="sun" className="size-3.5 text-[#F4A21D]" />
           ) : (
-            <SunIcon className="size-3.5 text-[#F4A21D]" />
+            <IconComponent name="moon" filled className="size-3.5 text-slate-700" />
           )}
-        </motion.span>
-      </motion.span>
-    </motion.button>
+        </Motion.span>
+      </Motion.span>
+    </Motion.button>
   );
 }
 

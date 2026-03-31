@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import IconComponent from "../components/IconComponent";
 import {
   deletePosterFromGallery,
   readSavedPosters,
@@ -121,7 +122,10 @@ function GalleryPage() {
                 to="/editor"
                 className="inline-flex items-center justify-center rounded-[1.25rem] bg-black px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/15 transition-colors duration-300 hover:bg-[#FF9B42] dark:bg-white dark:text-black dark:shadow-white/10 dark:hover:bg-[#FF9B42]"
               >
-                Create another poster
+                <span className="flex items-center gap-2">
+                  <IconComponent name="editor" className="size-4" />
+                  <span>Create another poster</span>
+                </span>
               </Link>
               <p className="inline-flex items-center rounded-[1.25rem] border border-gray-200/80 bg-white/70 px-5 py-3 text-sm text-gray-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-300">
                 {savedPosters.length} saved {savedPosters.length === 1 ? "poster" : "posters"} on this
@@ -232,7 +236,10 @@ function GalleryPage() {
                       onClick={(event) => handleDownloadPoster(event, poster)}
                       className="inline-flex items-center justify-center rounded-[1rem] bg-black px-4 py-2 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
                     >
-                      Download
+                      <span className="flex items-center gap-2">
+                        <IconComponent name="download" className="size-4" />
+                        <span>Download</span>
+                      </span>
                     </button>
                     <button
                       type="button"
@@ -242,7 +249,10 @@ function GalleryPage() {
                       }}
                       className="inline-flex items-center justify-center rounded-[1rem] border border-gray-300/80 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors duration-300 hover:border-red-300 hover:text-red-600 dark:border-white/10 dark:text-gray-200 dark:hover:border-red-500/40 dark:hover:text-red-300"
                     >
-                      Remove from gallery
+                      <span className="flex items-center gap-2">
+                        <IconComponent name="trash" className="size-4" />
+                        <span>Remove from gallery</span>
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -268,7 +278,10 @@ function GalleryPage() {
               to="/editor"
               className="mt-8 inline-flex items-center justify-center rounded-[1.25rem] bg-black px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/15 transition-colors duration-300 hover:bg-[#FF9B42] dark:bg-white dark:text-black dark:shadow-white/10 dark:hover:bg-[#FF9B42]"
             >
-              Go to editor
+              <span className="flex items-center gap-2">
+                <IconComponent name="arrowRight" className="size-4" />
+                <span>Go to editor</span>
+              </span>
             </Link>
           </div>
         )}

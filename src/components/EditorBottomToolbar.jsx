@@ -1,4 +1,5 @@
 import { useState } from "react";
+import IconComponent from "./IconComponent";
 
 const toolbarButtonClass =
   "transform-gpu transition-[transform,border-color,background-color,box-shadow,color,opacity] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] active:scale-[0.98] active:translate-y-0";
@@ -74,7 +75,10 @@ function EditorBottomToolbar(props) {
                 }}
                 className={`hidden rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] md:inline-flex ${toolbarButtonClass}`}
               >
-                Save
+                <span className="flex items-center gap-2">
+                  <IconComponent name="save" className="size-4" />
+                  <span>Save</span>
+                </span>
               </button>
               <button
                 type="button"
@@ -95,7 +99,7 @@ function EditorBottomToolbar(props) {
                     isMinimized ? "rotate-0" : "rotate-180"
                   }`}
                 >
-                  ^
+                  <IconComponent name="chevronDown" className="size-4" />
                 </span>
               </button>
             </div>
@@ -117,7 +121,10 @@ function EditorBottomToolbar(props) {
                   }}
                   className={`rounded-2xl bg-black px-2 py-2 text-sm font-semibold text-white hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] ${toolbarButtonClass}`}
                 >
-                  Zoom In +
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="zoomIn" className="size-4" />
+                    <span>Zoom In</span>
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -127,7 +134,10 @@ function EditorBottomToolbar(props) {
                   }}
                   className={`rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${toolbarButtonClass}`}
                 >
-                  Zoom Out -
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="zoomOut" className="size-4" />
+                    <span>Zoom Out</span>
+                  </span>
                 </button>
               </div>
             </ToolbarCard>
@@ -164,7 +174,10 @@ function EditorBottomToolbar(props) {
                   }}
                   className={`rounded-2xl border border-gray-200 bg-white px-2 py-2 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${toolbarButtonClass}`}
                 >
-                  Reset Position
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="refresh" className="size-4" />
+                    <span>Reset Position</span>
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -174,7 +187,10 @@ function EditorBottomToolbar(props) {
                   }}
                   className={`rounded-2xl bg-black px-2 py-2 text-sm font-semibold text-white hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] ${toolbarButtonClass}`}
                 >
-                  Center Map
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="crosshair" className="size-4" />
+                    <span>Center Map</span>
+                  </span>
                 </button>
               </div>
             </ToolbarCard>
@@ -196,7 +212,10 @@ function EditorBottomToolbar(props) {
                       : "border border-gray-200 bg-white text-gray-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
                   }`}
                 >
-                  Show Title
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="type" className="size-4" />
+                    <span>Show Title</span>
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -215,7 +234,10 @@ function EditorBottomToolbar(props) {
                       : "border border-gray-200 bg-white text-gray-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-200"
                   }`}
                 >
-                  Coordinates
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="pin" className="size-4" />
+                    <span>Coordinates</span>
+                  </span>
                 </button>
               </div>
             </ToolbarCard>
@@ -231,7 +253,10 @@ function EditorBottomToolbar(props) {
                   disabled={isExporting}
                   className={`rounded-2xl bg-black px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] ${toolbarButtonClass}`}
                 >
-                  PNG
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="image" className="size-4" />
+                    <span>PNG</span>
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -242,7 +267,10 @@ function EditorBottomToolbar(props) {
                   disabled={isExporting}
                   className={`rounded-2xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${toolbarButtonClass}`}
                 >
-                  PDF
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="file" className="size-4" />
+                    <span>PDF</span>
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -252,7 +280,10 @@ function EditorBottomToolbar(props) {
                   }}
                   className={`rounded-2xl bg-black px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] md:hidden ${toolbarButtonClass}`}
                 >
-                  Save Design
+                  <span className="flex items-center justify-center gap-2">
+                    <IconComponent name="save" className="size-4" />
+                    <span>Save Design</span>
+                  </span>
                 </button>
               </div>
             </ToolbarCard>
