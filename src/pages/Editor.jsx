@@ -1,11 +1,15 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { toJpeg, toPng } from "html-to-image";
 import jsPDF from "jspdf";
 import EditorBottomToolbar from "../components/EditorBottomToolbar";
 import EditorMapPreview from "../components/EditorMapPreview";
 import EditorSidebar from "../components/EditorSidebar";
-import { saveCurrentDesign, savePosterToGallery } from "../utils/galleryStorage";
+import {
+  readCurrentDesign,
+  saveCurrentDesign,
+  savePosterToGallery,
+} from "../utils/galleryStorage";
 import {
   initialState,
   locationPresets,
@@ -43,6 +47,39 @@ function EditorPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchFeedback, setSearchFeedback] = useState("");
   const [isExporting, setIsExporting] = useState(false);
+
+  useEffect(() => {
+    const savedDesign = readCurrentDesign();
+
+    if (!savedDesign) {
+      return;
+    }
+
+    setSelectedMapStyleId(savedDesign.selectedMapStyleId ?? initialState.selectedMapStyleId);
+    setSelectedThemeId(savedDesign.selectedThemeId ?? initialState.selectedThemeId);
+    setMapCenter(savedDesign.mapCenter ?? initialState.mapCenter);
+    setZoom(savedDesign.zoom ?? initialState.zoom);
+    setTitle(savedDesign.title ?? initialState.title);
+    setSubtitle(savedDesign.subtitle ?? initialState.subtitle);
+    setSearchQuery(savedDesign.searchQuery ?? initialState.searchQuery);
+    setSelectedLocationLabel(
+      savedDesign.selectedLocationLabel ?? initialState.selectedLocationLabel
+    );
+    setShowCoordinates(savedDesign.showCoordinates ?? initialState.showCoordinates);
+    setShowTitle(savedDesign.showTitle ?? true);
+    setShowPlaceNames(savedDesign.showPlaceNames ?? initialState.showPlaceNames);
+    setPosterSize(savedDesign.posterSize ?? initialState.posterSize);
+    setOrientation(savedDesign.orientation ?? initialState.orientation);
+    setPrimaryColor(savedDesign.primaryColor ?? initialState.primaryColor);
+    setBackgroundColor(savedDesign.backgroundColor ?? initialState.backgroundColor);
+    setAccentColor(savedDesign.accentColor ?? initialState.accentColor);
+    setTextColor(savedDesign.textColor ?? initialState.textColor);
+    setSelectedTextPlacementId(
+      savedDesign.selectedTextPlacementId ?? initialState.selectedTextPlacementId
+    );
+    setHasActiveLocation(Boolean(savedDesign.selectedLocationLabel || savedDesign.title));
+    setSearchFeedback("Loaded your saved poster from the gallery.");
+  }, []);
 
   const selectedTheme = useMemo(
     () => themePresets.find((theme) => theme.id === selectedThemeId) ?? themePresets[0],

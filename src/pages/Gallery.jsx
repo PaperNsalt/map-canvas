@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { deletePosterFromGallery, readSavedPosters } from "../utils/galleryStorage";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  deletePosterFromGallery,
+  readSavedPosters,
+  saveCurrentDesign,
+} from "../utils/galleryStorage";
 
 const galleryHighlights = [
   {
@@ -35,7 +39,9 @@ function formatSavedDate(value) {
 }
 
 function GalleryPage() {
+  const navigate = useNavigate();
   const [savedPosters, setSavedPosters] = useState([]);
+  const [galleryMessage, setGalleryMessage] = useState("Click a poster to reopen it in the editor.");
 
   useEffect(() => {
     const syncGallery = () => {
@@ -52,6 +58,40 @@ function GalleryPage() {
 
   const handleDelete = (posterId) => {
     setSavedPosters(deletePosterFromGallery(posterId));
+    setGalleryMessage("Poster removed from your gallery.");
+  };
+
+  const handleOpenPoster = (poster) => {
+    if (!poster.design) {
+      setGalleryMessage("This saved poster cannot be reopened.");
+      return;
+    }
+
+    saveCurrentDesign(poster.design);
+    setGalleryMessage(`Opening ${poster.title} in the editor...`);
+    navigate("/editor");
+  };
+
+  const handleDownloadPoster = (event, poster) => {
+    event.stopPropagation();
+
+    if (!poster.previewImage) {
+      setGalleryMessage("Download preview is not available for this poster yet.");
+      return;
+    }
+
+    const fileBaseName = (poster.title || "map-canvas-poster")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+
+    const link = document.createElement("a");
+    link.href = poster.previewImage;
+    link.download = `${fileBaseName || "map-canvas-poster"}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setGalleryMessage(`Downloading ${poster.title}.`);
   };
 
   return (
@@ -88,6 +128,8 @@ function GalleryPage() {
                 device
               </p>
             </div>
+
+            <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">{galleryMessage}</p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
@@ -120,7 +162,16 @@ function GalleryPage() {
             {savedPosters.map((poster) => (
               <article
                 key={poster.id}
-                className="overflow-hidden rounded-[2rem] border border-gray-200/80 bg-[linear-gradient(180deg,_rgba(255,255,255,0.96),_rgba(247,243,238,0.92))] shadow-sm transition-shadow duration-300 hover:shadow-xl dark:border-gray-800 dark:bg-[linear-gradient(180deg,_rgba(255,255,255,0.05),_rgba(255,255,255,0.03))]"
+                role="button"
+                tabIndex={0}
+                onClick={() => handleOpenPoster(poster)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    handleOpenPoster(poster);
+                  }
+                }}
+                className="overflow-hidden rounded-[2rem] border border-gray-200/80 bg-[linear-gradient(180deg,_rgba(255,255,255,0.96),_rgba(247,243,238,0.92))] shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FF9B42]/60 dark:border-gray-800 dark:bg-[linear-gradient(180deg,_rgba(255,255,255,0.05),_rgba(255,255,255,0.03))]"
               >
                 <div className="aspect-[4/5] overflow-hidden bg-gray-100 dark:bg-white/5">
                   {poster.previewImage ? (
@@ -175,13 +226,25 @@ function GalleryPage() {
                     <span>{formatSavedDate(poster.savedAt)}</span>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(poster.id)}
-                    className="mt-6 inline-flex items-center justify-center rounded-[1rem] border border-gray-300/80 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors duration-300 hover:border-red-300 hover:text-red-600 dark:border-white/10 dark:text-gray-200 dark:hover:border-red-500/40 dark:hover:text-red-300"
-                  >
-                    Remove from gallery
-                  </button>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={(event) => handleDownloadPoster(event, poster)}
+                      className="inline-flex items-center justify-center rounded-[1rem] bg-black px-4 py-2 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E]"
+                    >
+                      Download
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleDelete(poster.id);
+                      }}
+                      className="inline-flex items-center justify-center rounded-[1rem] border border-gray-300/80 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors duration-300 hover:border-red-300 hover:text-red-600 dark:border-white/10 dark:text-gray-200 dark:hover:border-red-500/40 dark:hover:text-red-300"
+                    >
+                      Remove from gallery
+                    </button>
+                  </div>
                 </div>
               </article>
             ))}

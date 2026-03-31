@@ -37,4 +37,17 @@ export function saveCurrentDesign(design) {
   window.localStorage.setItem(LEGACY_DESIGN_STORAGE_KEY, JSON.stringify(design));
 }
 
+export function readCurrentDesign() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(LEGACY_DESIGN_STORAGE_KEY);
+    return rawValue ? JSON.parse(rawValue) : null;
+  } catch {
+    return null;
+  }
+}
+
 export { GALLERY_STORAGE_KEY, LEGACY_DESIGN_STORAGE_KEY };

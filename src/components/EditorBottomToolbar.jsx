@@ -35,10 +35,15 @@ function EditorBottomToolbar(props) {
   const [isMinimized, setIsMinimized] = useState(
     () => typeof window !== "undefined" && window.innerWidth < 768
   );
+  const [actionMessage, setActionMessage] = useState("Ready to refine your poster.");
   const selectedStyle = mapStyles.find((style) => style.id === selectedMapStyleId);
   const contentStateClass = isMinimized
     ? "max-h-0 translate-y-3 opacity-0"
     : "max-h-[38vh] translate-y-0 opacity-100 md:max-h-[42vh] lg:max-h-none";
+
+  const showMessage = (message) => {
+    setActionMessage(message);
+  };
 
   return (
     <div className="fixed inset-x-1.5 bottom-1.5 z-[700] md:inset-x-6 md:bottom-4">
@@ -55,7 +60,7 @@ function EditorBottomToolbar(props) {
                   {selectedStyle?.name ?? "Style"}
                 </span>
                 <span className="text-[11px] text-gray-500 dark:text-gray-400">
-                  {isMinimized ? "Tap to expand actions" : "Swipe cards on mobile"}
+                  {actionMessage}
                 </span>
               </div>
             </div>
@@ -63,14 +68,23 @@ function EditorBottomToolbar(props) {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={saveDesign}
+                onClick={() => {
+                  showMessage("Saving poster to your gallery...");
+                  saveDesign();
+                }}
                 className={`hidden rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] md:inline-flex ${toolbarButtonClass}`}
               >
                 Save
               </button>
               <button
                 type="button"
-                onClick={() => setIsMinimized((current) => !current)}
+                onClick={() =>
+                  setIsMinimized((current) => {
+                    const nextValue = !current;
+                    showMessage(nextValue ? "Controls collapsed." : "Controls expanded.");
+                    return nextValue;
+                  })
+                }
                 className={`inline-flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${toolbarButtonClass}`}
                 aria-expanded={!isMinimized}
                 aria-label={isMinimized ? "Open controls" : "Hide controls"}
@@ -97,14 +111,20 @@ function EditorBottomToolbar(props) {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => setZoom((current) => Math.min(18, current + 1))}
+                  onClick={() => {
+                    setZoom((current) => Math.min(18, current + 1));
+                    showMessage("Zoomed in for a closer map view.");
+                  }}
                   className={`rounded-2xl bg-black px-2 py-2 text-sm font-semibold text-white hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] ${toolbarButtonClass}`}
                 >
                   Zoom In +
                 </button>
                 <button
                   type="button"
-                  onClick={() => setZoom((current) => Math.max(2, current - 1))}
+                  onClick={() => {
+                    setZoom((current) => Math.max(2, current - 1));
+                    showMessage("Zoomed out to show more of the area.");
+                  }}
                   className={`rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${toolbarButtonClass}`}
                 >
                   Zoom Out -
@@ -118,7 +138,10 @@ function EditorBottomToolbar(props) {
                   <button
                     key={style.id}
                     type="button"
-                    onClick={() => setSelectedMapStyleId(style.id)}
+                    onClick={() => {
+                      setSelectedMapStyleId(style.id);
+                      showMessage(`Switched to ${style.name}.`);
+                    }}
                     className={`rounded-2xl px-2 py-2 text-xs font-semibold ${toolbarButtonClass} ${
                       selectedMapStyleId === style.id
                         ? "bg-[#FF9B42] text-black"
@@ -135,14 +158,20 @@ function EditorBottomToolbar(props) {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={resetPosition}
+                  onClick={() => {
+                    resetPosition();
+                    showMessage("Map position reset.");
+                  }}
                   className={`rounded-2xl border border-gray-200 bg-white px-2 py-2 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${toolbarButtonClass}`}
                 >
                   Reset Position
                 </button>
                 <button
                   type="button"
-                  onClick={centerMap}
+                  onClick={() => {
+                    centerMap();
+                    showMessage("Map centered back to the starting point.");
+                  }}
                   className={`rounded-2xl bg-black px-2 py-2 text-sm font-semibold text-white hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] ${toolbarButtonClass}`}
                 >
                   Center Map
@@ -154,7 +183,13 @@ function EditorBottomToolbar(props) {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => setShowTitle((current) => !current)}
+                  onClick={() => {
+                    setShowTitle((current) => {
+                      const nextValue = !current;
+                      showMessage(nextValue ? "Title is now visible." : "Title is now hidden.");
+                      return nextValue;
+                    });
+                  }}
                   className={`rounded-2xl px-2 py-3 text-sm font-semibold ${toolbarButtonClass} ${
                     showTitle
                       ? "bg-[#FF9B42] text-black"
@@ -165,7 +200,15 @@ function EditorBottomToolbar(props) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowCoordinates((current) => !current)}
+                  onClick={() => {
+                    setShowCoordinates((current) => {
+                      const nextValue = !current;
+                      showMessage(
+                        nextValue ? "Coordinates are now visible." : "Coordinates are hidden."
+                      );
+                      return nextValue;
+                    });
+                  }}
                   className={`rounded-2xl px-2 py-3 text-sm font-semibold ${toolbarButtonClass} ${
                     showCoordinates
                       ? "bg-[#FF9B42] text-black"
@@ -181,7 +224,10 @@ function EditorBottomToolbar(props) {
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <button
                   type="button"
-                  onClick={() => exportPreview("png")}
+                  onClick={() => {
+                    showMessage("Preparing PNG download...");
+                    exportPreview("png");
+                  }}
                   disabled={isExporting}
                   className={`rounded-2xl bg-black px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] ${toolbarButtonClass}`}
                 >
@@ -189,7 +235,10 @@ function EditorBottomToolbar(props) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => exportPreview("pdf")}
+                  onClick={() => {
+                    showMessage("Preparing PDF download...");
+                    exportPreview("pdf");
+                  }}
                   disabled={isExporting}
                   className={`rounded-2xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:border-[#FF9B42] hover:text-[#C76614] disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:text-[#FFB36E] ${toolbarButtonClass}`}
                 >
@@ -197,7 +246,10 @@ function EditorBottomToolbar(props) {
                 </button>
                 <button
                   type="button"
-                  onClick={saveDesign}
+                  onClick={() => {
+                    showMessage("Saving poster to your gallery...");
+                    saveDesign();
+                  }}
                   className={`rounded-2xl bg-black px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#C76614] dark:bg-white dark:text-black dark:hover:bg-[#FFB36E] md:hidden ${toolbarButtonClass}`}
                 >
                   Save Design
