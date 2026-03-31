@@ -1,10 +1,11 @@
 import { useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
-import { toPng } from "html-to-image";
+import { toJpeg, toPng } from "html-to-image";
 import jsPDF from "jspdf";
 import EditorBottomToolbar from "../components/EditorBottomToolbar";
 import EditorMapPreview from "../components/EditorMapPreview";
 import EditorSidebar from "../components/EditorSidebar";
+import { saveCurrentDesign, savePosterToGallery } from "../utils/galleryStorage";
 import {
   initialState,
   locationPresets,
@@ -316,7 +317,31 @@ function EditorPage() {
     }
   };
 
-  const saveDesign = () => {
+  const createGalleryPreview = async () => {
+    if (!previewRef.current) {
+      return "";
+    }
+
+    try {
+      return await toJpeg(previewRef.current, {
+        cacheBust: true,
+        quality: 0.82,
+        backgroundColor,
+        pixelRatio: 1,
+      });
+    } catch {
+      const canvas = await html2canvas(previewRef.current, {
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor,
+        scale: 1,
+      });
+
+      return canvas.toDataURL("image/jpeg", 0.82);
+    }
+  };
+
+  const saveDesign = async () => {
     const design = {
       selectedMapStyleId,
       selectedThemeId,
@@ -338,31 +363,29 @@ function EditorPage() {
       selectedTextPlacementId,
     };
 
-    localStorage.setItem("map-canvas-design", JSON.stringify(design));
-    setSearchFeedback("Design saved locally.");
-  };
+    try {
+      const previewImage = await createGalleryPreview();
+      const savedAt = new Date().toISOString();
 
-  const resetDesign = () => {
-    setSelectedMapStyleId(initialState.selectedMapStyleId);
-    setSelectedThemeId(initialState.selectedThemeId);
-    setMapCenter(initialState.mapCenter);
-    setZoom(initialState.zoom);
-    setTitle(initialState.title);
-    setSubtitle(initialState.subtitle);
-    setSearchQuery(initialState.searchQuery);
-    setSelectedLocationLabel(initialState.selectedLocationLabel);
-    setShowTitle(true);
-    setHasActiveLocation(false);
-    setShowCoordinates(initialState.showCoordinates);
-    setShowPlaceNames(initialState.showPlaceNames);
-    setPosterSize(initialState.posterSize);
-    setOrientation(initialState.orientation);
-    setPrimaryColor(initialState.primaryColor);
-    setBackgroundColor(initialState.backgroundColor);
-    setAccentColor(initialState.accentColor);
-    setTextColor(initialState.textColor);
-    setSelectedTextPlacementId(initialState.selectedTextPlacementId);
-    setSearchFeedback("Design reset to defaults.");
+      saveCurrentDesign(design);
+      savePosterToGallery({
+        id: `${savedAt}-${Math.random().toString(36).slice(2, 8)}`,
+        title: title || "Untitled location",
+        subtitle: subtitle || "Custom map poster",
+        selectedLocationLabel: selectedLocationLabel || "Saved from editor",
+        previewImage,
+        mapStyleName: selectedMapStyle.name,
+        themeName: selectedTheme.name,
+        posterSize,
+        orientation,
+        savedAt,
+        design,
+      });
+
+      setSearchFeedback("Poster saved to your gallery.");
+    } catch {
+      setSearchFeedback("Saving failed. Try again after the map preview finishes loading.");
+    }
   };
 
   const resetPosition = () => {
