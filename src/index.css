@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -19,6 +20,14 @@
   font-optical-sizing: auto;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--ff-secondary);
+}
+
 *::after{
   box-sizing: border-box;
 } *::before{
@@ -31,4 +40,57 @@ section{
 
 p{
   font-family: var(--ff-secondary);
+}
+
+button,
+a,
+input,
+select,
+textarea,
+[role="button"] {
+  font-family: var(--ff-secondary);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+input,
+select,
+textarea {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+@media (hover: hover) {
+  button:hover,
+  a:hover,
+  [role="button"]:hover {
+    transform: translateY(-1px);
+  }
+
+  input:hover,
+  select:hover,
+  textarea:hover {
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  }
+}
+
+button:active,
+a:active,
+[role="button"]:active {
+  transform: scale(0.98);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  transform: translateY(-1px);
 }
