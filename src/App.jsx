@@ -25,6 +25,8 @@ function App() {
             <Route path="editor" element={<EditorPage />} />
             <Route path="gallery" element={<GalleryPage />} />
             <Route path="about" element={<AboutPage />} />
+
+            <Route path="*" element={<HomePage />} />
           </Routes>
         </main>
 
