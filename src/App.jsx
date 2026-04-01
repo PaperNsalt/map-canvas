@@ -29,7 +29,6 @@ function App() {
             <Route path="*" element={<HomePage />} />
           </Routes>
         </main>
-
         <Footer />
       </div>
     </ThemeProvider>
