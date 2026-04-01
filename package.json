@@ -1,5 +1,6 @@
 {
   "name": "map-canvas",
+  "homepage": "https://papernsalt.github.io/map-canvas",
   "private": true,
   "version": "0.0.0",
   "type": "module",
