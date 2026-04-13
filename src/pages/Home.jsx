@@ -137,7 +137,7 @@ function PosterPreview() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[0.7rem] font-semibold uppercase tracking-[0.38em] text-[#FFB36E]">
-                    Artistic series
+                    Artistic Series
                   </p>
                   <h3
                     className="mt-3 text-4xl leading-none"

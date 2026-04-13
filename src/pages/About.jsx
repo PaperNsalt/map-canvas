@@ -1,5 +1,157 @@
 import { motion } from "framer-motion";
-import heroImage from "../assets/hero.png";
+
+function AboutPoster() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24, rotate: 1.5 }}
+      animate={{ opacity: 1, y: 0, rotate: 0 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+      whileHover={{ y: -10, rotate: -1.4, scale: 1.01 }}
+      whileTap={{ scale: 0.985 }}
+      className="relative mx-auto w-full max-w-xl"
+    >
+      <div className="pointer-events-none absolute inset-0 rounded-[3rem] bg-[#FF9B42]/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-4 top-12 h-28 w-28 rounded-full bg-black/10 blur-3xl dark:bg-white/10" />
+
+      <div className="relative overflow-hidden rounded-[2.2rem] border border-white/60 bg-[#171717] p-3 shadow-2xl dark:border-white/10">
+        <div className="relative overflow-hidden rounded-[1.7rem] bg-[linear-gradient(180deg,_#f8f2eb,_#efe5da)] p-5 dark:bg-[linear-gradient(180deg,_#111111,_#191919)]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,155,66,0.18),_transparent_26%),radial-gradient(circle_at_bottom_right,_rgba(0,0,0,0.08),_transparent_28%)] dark:bg-[radial-gradient(circle_at_top_left,_rgba(255,155,66,0.18),_transparent_24%),radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.06),_transparent_28%)]" />
+
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="relative overflow-hidden rounded-[1.45rem] border border-black/10 bg-[linear-gradient(180deg,_#1C1C1C,_#0C0C0C)] px-6 pb-6 pt-8 text-white dark:border-white/10"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute left-1/2 top-10 h-44 w-44 -translate-x-1/2 rounded-full bg-[#FF9B42]/16 blur-3xl"
+            />
+
+            <div className="relative z-10 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.36em] text-[#FFB36E]">
+                  Signature poster
+                </p>
+                <h2
+                  className="mt-3 text-4xl"
+                  style={{ fontFamily: "'Playfair Display', 'serif'" }}
+                >
+                  Barcelona
+                </h2>
+              </div>
+
+              <motion.div
+                animate={{ rotate: [0, 8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="rounded-full border border-white/12 bg-white/8 px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.28em] text-white/82"
+              >
+                Curated
+              </motion.div>
+            </div>
+
+            <div className="relative mt-8 flex h-[18rem] items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_center,_rgba(255,155,66,0.18),_transparent_38%),linear-gradient(180deg,_rgba(255,255,255,0.04),_rgba(255,255,255,0.01))]">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[15rem] w-[15rem] rounded-full border border-white/10"
+              />
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[11rem] w-[11rem] rounded-full border border-white/10"
+              />
+
+              <svg
+                viewBox="0 0 320 320"
+                className="absolute inset-0 h-full w-full opacity-90"
+                aria-hidden="true"
+              >
+                <path
+                  d="M52 140 C92 100, 126 120, 156 168 S232 226, 274 190"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.18)"
+                  strokeWidth="2.4"
+                />
+                <path
+                  d="M60 222 C102 184, 144 240, 196 202 S244 160, 282 178"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.13)"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M82 88 C128 124, 176 88, 222 126 S250 174, 274 162"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.12)"
+                  strokeWidth="2"
+                />
+                <circle
+                  cx="176"
+                  cy="162"
+                  r="42"
+                  fill="rgba(255,155,66,0.10)"
+                  stroke="rgba(255,179,110,0.64)"
+                  strokeWidth="2"
+                />
+              </svg>
+
+              <motion.div
+                animate={{
+                  x: [0, 5, 0, -5, 0],
+                  y: [0, -4, 0, 4, 0],
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-[#FFB36E]/55 bg-[#FF9B42] text-black shadow-[0_10px_30px_rgba(255,155,66,0.34)]"
+              >
+                <span className="text-sm font-bold">MC</span>
+              </motion.div>
+            </div>
+
+            <div className="relative z-10 mt-7 flex items-end justify-between gap-6">
+              <div>
+                <p className="text-[0.68rem] uppercase tracking-[0.32em] text-white/48">
+                  Coordinates
+                </p>
+                <p className="mt-2 text-sm tracking-[0.18em] text-white/84">
+                  41.3874 N / 2.1686 E
+                </p>
+              </div>
+
+              <div className="text-right">
+                <p className="text-[0.68rem] uppercase tracking-[0.32em] text-white/48">
+                  Mood
+                </p>
+                <p
+                  className="mt-2 text-2xl"
+                  style={{ fontFamily: "'Playfair Display', 'serif'" }}
+                >
+                  Warm Horizons
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ x: 4 }}
+            className="relative mt-4 rounded-[1.4rem] border border-black/8 bg-white/85 p-4 text-black shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-black/72 dark:text-white"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#C76614] dark:text-[#FFB36E]">
+              Motion preview
+            </p>
+            <p
+              className="mt-2 text-xl"
+              style={{ fontFamily: "'Playfair Display', 'serif'" }}
+            >
+              An expressive poster with subtle living movement.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 function AboutPage() {
   const highlights = [
@@ -51,14 +203,7 @@ function AboutPage() {
           </p>
         </div>
 
-        <div className="relative">
-          <div className="absolute inset-0 bg-[#FF9B42]/20 blur-3xl rounded-[3rem]"></div>
-          <img
-            src={heroImage}
-            alt="MapCanvas poster preview"
-            className="relative w-full max-w-xl mx-auto rounded-[2rem] shadow-2xl object-cover"
-          />
-        </div>
+        <AboutPoster />
       </section>
 
       <section className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
