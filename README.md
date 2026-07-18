@@ -22,20 +22,18 @@
 
 ---
 
-## 📸 Preview
-
-> Add screenshots of your application here.
-
 ### Home Page
 
 ```
-/screenshots/home.png
+<img width="1883" height="909" alt="image" src="https://github.com/user-attachments/assets/bcebd80e-d5ed-433e-b7df-f53d5f935315" />
+
 ```
 
 ### Editor
 
 ```
-/screenshots/editor.png
+<img width="1873" height="898" alt="image" src="https://github.com/user-attachments/assets/88d387b8-8092-43b2-9e09-cb5069749f81" />
+
 ```
 
 ---
@@ -190,7 +188,7 @@ This project is licensed under the MIT License.
 
 **Jeremy Rellama**
 
-- GitHub: https://github.com/yourusername
+- GitHub: https://github.com/saltnpaper
 
 ---
 
