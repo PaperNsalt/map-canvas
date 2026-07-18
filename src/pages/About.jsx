@@ -37,7 +37,7 @@ function AboutPoster() {
                   className="mt-3 text-4xl"
                   style={{ fontFamily: "'Playfair Display', 'serif'" }}
                 >
-                  Barcelona
+                  Pitipiwpiw
                 </h2>
               </div>
 
@@ -187,12 +187,12 @@ function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
           >
-            We turn special locations into modern wall art.
+            I turn special locations into modern wall art.
           </motion.h1>
 
           <p className="text-base md:text-lg mt-6 text-gray-700 dark:text-gray-300 leading-8">
             MapCanvas is built for people who want more than a plain screenshot
-            of a map. We help you transform real places into beautiful poster
+            of a map. I help you transform real places into beautiful poster
             designs that feel thoughtful, personal, and ready to frame.
           </p>
 
@@ -231,7 +231,7 @@ function AboutPage() {
           className="text-3xl md:text-4xl"
           style={{ fontFamily: "'Playfair Display', 'serif'" }}
         >
-          Why we made it
+          Why I made it
         </h2>
 
         <p className="mt-6 text-base md:text-lg leading-8 max-w-3xl">

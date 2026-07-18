@@ -18,7 +18,7 @@ const supportLinks = [
 const socialLinks = [
   {
     label: "Instagram",
-    href: "#",
+    href: "https://www.instagram.com/_jjemmmm/",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="size-5" aria-hidden="true">
         <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" strokeWidth="1.8" />
@@ -133,7 +133,7 @@ function Footer() {
                 Contact
               </p>
               <p className="mt-3 text-sm leading-6 text-gray-700 dark:text-gray-300">
-                hello@mapcanvas.co
+                <span className="text-[#C76614]">jeremyrellama17@gmail.com</span> 
                 <br />
                 Designed for memorable places and modern poster lovers.
               </p>

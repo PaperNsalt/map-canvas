@@ -518,7 +518,7 @@ function HomePage() {
             <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
               <Link
                 to="/editor"
-                className="inline-flex items-center justify-center rounded-[1.25rem] bg-[#FF9B42] px-6 py-3 text-sm font-semibold text-black shadow-lg shadow-[#FF9B42]/25 transition-colors duration-300 hover:bg-white dark:hover:bg-black dark:hover:text-white"
+                className="inline-flex items-center justify-center rounded-[1.25rem] bg-[#FF9B42] px-6 py-3 text-sm font-semibold text-black  hover:text-black shadow-lg shadow-[#FF9B42]/25 transition-colors duration-300 hover:bg-white dark:hover:bg-black dark:hover:text-white"
               >
                 Create Now
               </Link>
